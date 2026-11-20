@@ -22,3 +22,10 @@ venv/
 
 # VS Code
 .vscode/
+
+# Pipeline outputs and local Airflow state
+data/
+.airflow/
+.airflow-test/
+.pytest_cache/
+.Rhistory
