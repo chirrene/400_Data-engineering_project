@@ -1,0 +1,9 @@
+# DAG dependencies (Andy). Install with the official constraints file so
+# versions stay reproducible:
+#   pip install -r requirements-airflow.txt \
+#     --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.11.txt
+# Team environment is Python 3.11 (Airflow 2.10 supports 3.8-3.12, not 3.13).
+apache-airflow==2.10.5
+requests==2.32.3
+psycopg2-binary==2.9.10
+pytest==8.3.4
