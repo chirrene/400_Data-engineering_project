@@ -5,3 +5,5 @@ streamlit
 plotly
 networkx
 pytest
+SQLAlchemy
+psycopg2-binary
