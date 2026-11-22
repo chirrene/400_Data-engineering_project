@@ -9,11 +9,19 @@ QUALITY_CHECKS = {
         FROM nasa_records
         WHERE TRIM(title) = ''
     """,
+
     "image_without_url": """
         SELECT COUNT(*)
         FROM nasa_records
         WHERE media_type = 'image'
           AND (image_url IS NULL OR TRIM(image_url) = '')
+    """,
+
+    # Check for records with dates later than today.
+    "future_date": """
+        SELECT COUNT(*)
+        FROM nasa_records
+        WHERE date > CURRENT_DATE
     """,
 }
 
