@@ -1,0 +1,2389 @@
+[
+ {
+  "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/collection.json",
+  "data": [
+   {
+    "center": "HQ",
+    "date_created": "2025-03-12T00:00:00Z",
+    "description": "This illustration of Moon to Mars operations shows an astronaut piloting a robotic arm to manipulate cargo on Mars. NASA’s Moon to Mars Objectives establish an objectives-based approach to the agency's human deep space exploration efforts; NASA’s Moon to Mars Architecture approach distills the objectives into operational capabilities and elements.",
+    "keywords": [
+     "Moon",
+     "Mars",
+     "Objectives",
+     "Architecture",
+     "Artist Concept"
+    ],
+    "media_type": "image",
+    "nasa_id": "Moon to Mars Operations",
+    "title": "Moon to Mars Operations"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/Moon to Mars Operations~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 859,
+    "size": 190464,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/Moon to Mars Operations~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 429,
+    "size": 51200,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/Moon to Mars Operations~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 429,
+    "size": 51200,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/Moon to Mars Operations~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1289,
+    "size": 412672,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Operations/Moon to Mars Operations~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 11580,
+    "width": 7776,
+    "size": 110100480
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/collection.json",
+  "data": [
+   {
+    "center": "HQ",
+    "date_created": "2025-03-12T00:00:00Z",
+    "description": "This illustration of Moon to Mars infrastructure shows astronauts living and working on the surface of Mars. NASA’s Moon to Mars Objectives establish an objectives-based approach to the agency's human deep space exploration efforts; NASA’s Moon to Mars Architecture approach distills the objectives into operational capabilities and elements.",
+    "keywords": [
+     "Moon",
+     "Mars",
+     "Objectives",
+     "Architecture",
+     "Artist Concept"
+    ],
+    "media_type": "image",
+    "nasa_id": "Moon to Mars Infrastructure",
+    "title": "Moon to Mars Infrastructure"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/Moon to Mars Infrastructure~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 859,
+    "size": 177152,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/Moon to Mars Infrastructure~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 429,
+    "size": 51200,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/Moon to Mars Infrastructure~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 429,
+    "size": 51200,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/Moon to Mars Infrastructure~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1289,
+    "size": 370688,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Infrastructure/Moon to Mars Infrastructure~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 11580,
+    "width": 7776,
+    "size": 78643200
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/collection.json",
+  "data": [
+   {
+    "center": "HQ",
+    "date_created": "2025-03-12T00:00:00Z",
+    "description": "This illustration of Moon to Mars multidisciplinary science shows astronauts collecting and analyzing lunar regolith. NASA’s Moon to Mars Objectives establish an objectives-based approach to the agency's human deep space exploration efforts; NASA’s Moon to Mars Architecture approach distills the objectives into operational capabilities and elements.",
+    "keywords": [
+     "Moon",
+     "Mars",
+     "Objectives",
+     "Architecture",
+     "Artist Concept"
+    ],
+    "media_type": "image",
+    "nasa_id": "Moon to Mars Multidisciplinary Science",
+    "title": "Moon to Mars Multidisciplinary Science"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/Moon to Mars Multidisciplinary Science~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 859,
+    "size": 189440,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/Moon to Mars Multidisciplinary Science~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 429,
+    "size": 56320,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/Moon to Mars Multidisciplinary Science~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 429,
+    "size": 56320,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/Moon to Mars Multidisciplinary Science~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1289,
+    "size": 389120,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Multidisciplinary Science/Moon to Mars Multidisciplinary Science~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 11580,
+    "width": 7776,
+    "size": 96468992
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/collection.json",
+  "data": [
+   {
+    "center": "HQ",
+    "date_created": "2025-03-12T00:00:00Z",
+    "description": "This illustration of Moon to Mars transportation and habitation shows astronauts driving a pressurized rover away from the dome of a translucent lunar habitat. NASA’s Moon to Mars Objectives establish an objectives-based approach to the agency's human deep space exploration efforts; NASA’s Moon to Mars Architecture approach distills the objectives into operational capabilities and elements.",
+    "keywords": [
+     "Moon",
+     "Mars",
+     "Objectives",
+     "Architecture",
+     "Artist Concept"
+    ],
+    "media_type": "image",
+    "nasa_id": "Moon to Mars Transportation and Habitation",
+    "title": "Moon to Mars Transportation and Habitation"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/Moon to Mars Transportation and Habitation~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 859,
+    "size": 218112,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/Moon to Mars Transportation and Habitation~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 429,
+    "size": 61440,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/Moon to Mars Transportation and Habitation~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 429,
+    "size": 61440,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/Moon to Mars Transportation and Habitation~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1289,
+    "size": 451584,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/Moon to Mars Transportation and Habitation/Moon to Mars Transportation and Habitation~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 11580,
+    "width": 7776,
+    "size": 85983232
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24915/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-20T00:00:00Z",
+    "description": "NASA's 2001 Mars Odyssey orbiter arrived at Mars on Oct. 24, 2001.  Over the past two decades, the mission has mapped the composition of the Martian surface, providing a window to the past so scientists could piece together how the planet evolved. It has also served as a vital asset in relaying communications between landers and rovers at the Red Planet and the mission teams back on Earth.  Here are some of the highlights of the last 20 years:      Mars Odyssey has completed 80,000 orbits.     Mars Odyssey has taken more than 1.2 million images.     Mars Odyssey has returned 16 terabits of total science data to Earth, including 1 terabit of data relayed from Mars surface missions.     Mars Odyssey has provided communications relay for six Mars surface missions: the Phoenix and InSight landers, as well as the Spirit, Opportunity, Curiosity, and Perseverance rovers.  https://photojournal.jpl.nasa.gov/catalog/PIA24915",
+    "description_508": "NASA's 2001 Mars Odyssey orbiter arrived at Mars on October 24, 2001.",
+    "keywords": [
+     "2001 Mars Odyssey",
+     "Mars"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24915",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Mars Odyssey Orbiter By the Numbers"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24915/PIA24915~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 100000,
+    "height": 711
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24915/PIA24915~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 33000,
+    "height": 355
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24915/PIA24915~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 33000,
+    "height": 355
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24915/PIA24915~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 190000,
+    "height": 1066
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24915/PIA24915~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2000,
+    "width": 3600,
+    "size": 529408
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24838/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-09-28T00:00:00Z",
+    "description": "NASA's Mars missions, clockwise from top left: Perseverance rover and Ingenuity Mars Helicopter, InSight lander, Odyssey orbiter, MAVEN orbiter, Curiosity rover, and Mars Reconnaissance Orbiter.  https://photojournal.jpl.nasa.gov/catalog/PIA24838",
+    "description_508": "NASA's Mars missions, clockwise from top left: Perseverance rover and Ingenuity Mars Helicopter, InSight lander, Odyssey orbiter, MAVEN orbiter, Curiosity rover, and Mars Reconnaissance Orbiter.",
+    "keywords": [
+     "Mars"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24838",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "NASA's Mars Missions"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24838/PIA24838~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 152000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24838/PIA24838~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24838/PIA24838~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24838/PIA24838~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 900,
+    "width": 1600,
+    "size": 231000
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24127/collection.json",
+  "data": [
+   {
+    "album": [
+     "Mars_2020_Perseverance"
+    ],
+    "center": "JPL",
+    "date_created": "2020-10-01T00:00:00Z",
+    "description": "This illustration depicts Mars Helicopter Ingenuity during a test flight on Mars. Ingenuity was taken to the Red Planet strapped to the belly of the Perseverance rover (seen in the background).  Ingenuity, a technology experiment, will be the first aircraft to attempt controlled flight on another planet. It will arrive on Mars on Feb. 18, 2021, attached to the belly of NASA's Mars 2020 Perseverance rover. Ingenuity is expected to attempt its first flight test in spring 2021.  https://photojournal.jpl.nasa.gov/catalog/PIA24127",
+    "description_508": "This illustration depicts Mars Helicopter Ingenuity during a test flight on Mars.",
+    "keywords": [
+     "Mars Helicopter",
+     "artist concept"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24127",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Helicopter Above Perseverance on Mars"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24127/PIA24127~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 86000,
+    "height": 1085
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24127/PIA24127~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 542
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24127/PIA24127~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 542
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24127/PIA24127~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 190000,
+    "height": 1627
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24127/PIA24127~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3255,
+    "width": 3840,
+    "size": 673000
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24348/collection.json",
+  "data": [
+   {
+    "album": [
+     "Mars_2020_Perseverance"
+    ],
+    "center": "JPL",
+    "date_created": "2020-12-21T00:00:00Z",
+    "description": "An illustration of the planet Mars, highlighting NASA's Mars Perseverance rover mission.  https://photojournal.jpl.nasa.gov/catalog/PIA24348",
+    "description_508": "An illustration of the planet Mars, highlighting NASA's Mars Perseverance rover mission.",
+    "keywords": [
+     "Mars 2020"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24348",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Mars Perseverance Rover (Gradient Illustration)"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24348/PIA24348~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1279,
+    "size": 29000,
+    "height": 604
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24348/PIA24348~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 639,
+    "size": 9800,
+    "height": 302
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24348/PIA24348~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 639,
+    "size": 9800,
+    "height": 302
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24348/PIA24348~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 55000,
+    "height": 906
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24348/PIA24348~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 4320,
+    "width": 9148,
+    "size": 763000
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24377/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-01-27T00:00:00Z",
+    "description": "This annotated image shows landing ellipses for five NASA missions to Mars. A landing ellipse is the region within which a probe is expected to land based on its trajectory as it approaches the planet. A smaller landing ellipse means engineers have created a more precise model of the probe's expected trajectory. The four ellipses shown here are for the Perseverance Mars rover, Curiosity Mars rover, InSight Mars lander, Phoenix lander, and Mars Pathfinder probe.  https://photojournal.jpl.nasa.gov/catalog/PIA24377",
+    "description_508": "This annotated image shows landing ellipses for five NASA missions to Mars.",
+    "keywords": [
+     "Mars"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24377",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Mars Probe Landing Ellipses"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24377/PIA24377~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 220000,
+    "height": 1133
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24377/PIA24377~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 59000,
+    "height": 566
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24377/PIA24377~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 59000,
+    "height": 566
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24377/PIA24377~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 471000,
+    "height": 1699
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24377/PIA24377~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3567,
+    "width": 4029,
+    "size": 1803000
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23823/collection.json",
+  "data": [
+   {
+    "album": [
+     "Mars_2020_Perseverance"
+    ],
+    "center": "JPL",
+    "date_created": "2020-04-10T00:00:00Z",
+    "description": "The Mars Helicopter and its Mars Helicopter Delivery System were attached to the Perseverance Mars rover at Kennedy Space Center on April 6, 2020. A shell (not pictured) will protect the helicopter during the rover's descent to the surface of Jezero Crater on Feb. 18, 2021. The helicopter will be deployed about two-and-a-half months after Perseverance lands.  https://photojournal.jpl.nasa.gov/catalog/PIA23823",
+    "description_508": "The Mars Helicopter and its Mars Helicopter Delivery System were attached to the Perseverance Mars rover at Kennedy Space Center on April 6, 2020.",
+    "keywords": [
+     "Mars 2020"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23823",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Mars Helicopter Aboard Perseverance"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23823/PIA23823~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 127000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23823/PIA23823~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 47000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23823/PIA23823~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 47000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23823/PIA23823~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 227000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23823/PIA23823~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2968,
+    "width": 5274,
+    "size": 1705000
+   }
+  ],
+  "_keyword": "mars"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24818/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-28T00:00:00Z",
+    "description": "Jupiter's banded appearance is created by the cloud-forming \"weather layer.\" In this composite image, the image on the left show's Jupiter's thermal energy being emitted in infrared light, with dark cloudy bands appearing as silhouettes against Jupiter's thermal glow. The image on the right shows Jupiter's appearance in visible light, with white cloudy \"zones\" and the relatively cloud-free \"belts\" appearing as red-brown colors.  The composite was created using infrared data collected by the Gemini North telescope (left) and a visible-light image taken by NASA's Hubble Space Telescope. Both images were created from data captured on Jan. 11, 2017.  https://photojournal.jpl.nasa.gov/catalog/PIA24818",
+    "description_508": "Jupiter's banded appearance is created by the cloud-forming weather layer. This composite image shows views of Jupiter in infrared and visible light taken by the Gemini North telescope and NASA's Hubble Space Telescope.",
+    "keywords": [
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24818",
+    "secondary_creator": "International Gemini Observatory/NOIRLab/NSF/AURA/NASA/ESA, M.H. Wong and I. de Pater (UC Berkeley) et al.",
+    "title": "Jupiter's Bands"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24818/PIA24818~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 46000,
+    "height": 581
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24818/PIA24818~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 46000,
+    "height": 581
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24818/PIA24818~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 696,
+    "width": 766,
+    "size": 59392
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24965/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-28T00:00:00Z",
+    "description": "This graphic compares the atmospheric circulations of Earth and Jupiter. Earth contains one Ferrel cell (a mid-latitudinal cell where air flows poleward and eastward at the surface, and equatorward and westward at higher altitudes). On Jupiter, the circulation cells are depicted in aqua, and underlying jets streams in the pink region. The jet streams are characteristic for all depths associated with the cells.  Jupiter has eight Ferrel-like cells in the north and eight in the south, due to its large size and fast rotation. Each of these cells on Jupiter is at least 30 times larger than the equivalent cell on Earth. The main difference between the Jovian and terrestrial cells is that on Earth, the cell ends at the surface, while on gaseous Jupiter, it penetrates into the deeper layers of the atmosphere. Due to measuring limitations, it has yet to be determined how deep these cells extend.  https://photojournal.jpl.nasa.gov/catalog/PIA24965",
+    "description_508": "This graphic compares the atmospheric circulations of Earth and Jupiter.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24965",
+    "secondary_creator": "NASA/JPL-Caltech/SwRI/Weizmann Institute of Science",
+    "title": "Atmospheric Circulation Cells on Earth and Jupiter"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24965/PIA24965~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 67000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24965/PIA24965~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24965/PIA24965~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24965/PIA24965~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 126000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24965/PIA24965~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2160,
+    "width": 3840,
+    "size": 345088
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25037/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-12-17T00:00:00Z",
+    "description": "The left image shows a phytoplankton bloom in the Norwegian Sea. The right image shows turbulent clouds in Jupiter's atmosphere.  Jupiter's atmosphere is one of the most turbulent places in the solar system. Orbiting Jupiter and its 79 moons is NASA's Juno spacecraft, which sends images from the largest planet in our solar system back to researchers on Earth. These images from Juno have given oceanographers the raw materials to study the rich turbulence at Jupiter's poles and the physical forces that drive large cyclones on Jupiter.  Lia Siegelman, a physical oceanographer and postdoctoral scholar at Scripps Institution of Oceanography at the University of California, San Diego, observed similarities between the richness of turbulence around Jovian cyclones and the filaments around smaller eddies with turbulence seen in Earth's oceans.  https://photojournal.jpl.nasa.gov/catalog/PIA25037",
+    "description_508": "Left to right: A phytoplankton bloom in the Norwegian Sea, and turbulent clouds in Jupiter's atmosphere.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25037",
+    "secondary_creator": "Image data: NASA OBPG OB.DAAC/GSFC/Aqua/MODIS Image processing: Gerald Eichstädt CC BY",
+    "title": "Vortices on Jupiter and Earth"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25037/PIA25037~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 82000,
+    "height": 562
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25037/PIA25037~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 27000,
+    "height": 281
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25037/PIA25037~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 27000,
+    "height": 281
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25037/PIA25037~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 152000,
+    "height": 843
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25037/PIA25037~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1256,
+    "width": 2858,
+    "size": 278528
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25062/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-12-17T00:00:00Z",
+    "description": "A model of the interior of Jupiter is compared with that of Earth, to scale. Jupiter is mostly hydrogen, with some helium and a dusting of heavier elements. The gas giant's outer envelope is in the form of molecular hydrogen and, beneath that, the hydrogen transitions to metallic hydrogen. Most models include a layer of metallic hydrogen stabilized by exsolution of helium (aka \"helium rain\") at the top of the metallic hydrogen region.  https://photojournal.jpl.nasa.gov/catalog/PIA25062",
+    "description_508": "A model of the interior of Jupiter is compared with that of Earth, to scale.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25062",
+    "secondary_creator": "NASA/JPL-Caltech/SwRI/John E. Connerney",
+    "title": "Jupiter Interior Graphic"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25062/PIA25062~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 54000,
+    "height": 995
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25062/PIA25062~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 18000,
+    "height": 497
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25062/PIA25062~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 18000,
+    "height": 497
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25062/PIA25062~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 105000,
+    "height": 1493
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25062/PIA25062~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3500,
+    "width": 4501,
+    "size": 445440
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24433/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-03-16T00:00:00Z",
+    "description": "This illustration depicts ultraviolet polar aurorae on Jupiter and Earth. While the diameter of the Jovian world is 10 times larger than that of Earth, both planets have markedly similar aurora.  https://photojournal.jpl.nasa.gov/catalog/PIA24433",
+    "description_508": "This illustration depicts ultraviolet polar aurorae on Jupiter and Earth.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24433",
+    "secondary_creator": "NASA/JPL-Caltech/SwRI/UVS/STScI/MODIS/WIC/IMAGE/ULiège",
+    "title": "Aurorae on Jupiter and Earth"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24433/PIA24433~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 22000,
+    "height": 479
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24433/PIA24433~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 22000,
+    "height": 479
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24433/PIA24433~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1250,
+    "width": 1667,
+    "size": 102000
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24299/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-01-08T00:00:00Z",
+    "description": "This composite image shows a hot spot in Jupiter's atmosphere. In the image on the left, taken on Sept. 16, 2020, by the Gemini North telescope on the island of Hawaii, the hot spot appears bright in the infrared at a wavelength of 5 microns. In the inset image on the right, taken by Juno's JunoCam visible-light imager, also on Sept. 16 during Juno's 29th perijove pass, the hot spot appears dark.  Scientists have known of Jupiter's hot spots for a long time. On Dec. 7, 1995, the Galileo probe likely descended into a similar hot spot. To the naked eye, Jupiter's hot spots appear as dark, cloud-free areas in Jupiter's equatorial belt, but at infrared wavelengths, which are invisible to the human eye, they are extremely bright, revealing the warm, deep atmosphere below the clouds.  High-resolution images of hot spots such as these are key both to understanding the role of storms and waves in Jupiter's atmosphere.  Citizen scientist Brian Swift processed the images to enhance the color and contrast, with further processing by Tom Momary to map the JunoCam image to the Gemini data.  The international Gemini North telescope is a 26.6-foot-diameter (8.1-meter-diameter) optical/infrared telescope optimized for infrared observations, and is managed for the NSF by the Association of Universities for Research in Astronomy (AURA).  https://photojournal.jpl.nasa.gov/catalog/PIA24299",
+    "description_508": "This composite image shows a hot spot in Jupiter's atmosphere during perijove 29.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24299",
+    "secondary_creator": "Gemini Image: International Gemini Observatory/NOIRLab/NSF/AURA M.H. Wong (UC Berkeley), JunoCam image: ENASA/JPL-Caltech/SwRI/MSSS/Brian Swift © CC BY / Tom Momary © CC BY",
+    "title": "A Hot Spot on Jupiter"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24299/PIA24299~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 79000,
+    "height": 853
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24299/PIA24299~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 27000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24299/PIA24299~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 27000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24299/PIA24299~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 153000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24299/PIA24299~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2000,
+    "width": 3000,
+    "size": 324000
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24300/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-01-08T00:00:00Z",
+    "description": "This composite image shows a hot spot in Jupiter's atmosphere. In the image on the left, taken on Nov. 8, 2020, by NASA's Infrared Telescope Facility (IRTF) on the island of Hawaii, the hot spot appears bright in the infrared. The inset image on the right, taken by the JunoCam visible-light imager (also on Nov. 8, during Juno's 30th perijove pass), the hot spot appears dark and is flanked by high light-colored clouds to the south and a bright white storm to the west.  Jupiter's hot spots have been known for a long time. On Dec. 7, 1995, the Galileo probe likely descended into a similar hot spot. To the naked eye, Jupiter's hot spots appear as dark, cloud-free spots in Jupiter's equatorial belt, but at infrared wavelengths, they are extremely bright, revealing the warm, deep atmosphere below the clouds.  High-resolution images of hot spots such as these are key to understanding the role of storms and waves in Jupiter's atmosphere and to solving the mystery of Jupiter's elusive water.  Citizen scientist Kevin Gill processed the image to enhance the color and contrast, with further processing by Tom Momary to map the JunoCam image to the IRTF data.  The NASA IRTF is a 10.5-foot-diameter (3.2-meter-diameter) telescope optimized for infrared observations and is managed for NASA by the Institute for Astronomy at the University of Hawai'i.  https://photojournal.jpl.nasa.gov/catalog/PIA24300",
+    "description_508": "This composite image shows a hot spot in Jupiter's atmosphere during perijove 30.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24300",
+    "secondary_creator": "Infrared Telescope Facility: NASA/Infrared Telescope Facility/University of Hawaii/G. S. Orton (JPL), JunoCam image: NASA/JPL-Caltech/SwRI/MSSS/Kevin Gill © CC BY / Tom Momary © CC BY",
+    "title": "Two Views of Jupiter Hot Spot"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24300/PIA24300~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 89000,
+    "height": 853
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24300/PIA24300~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 29000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24300/PIA24300~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 29000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24300/PIA24300~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 170000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24300/PIA24300~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2000,
+    "width": 3000,
+    "size": 344000
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24964/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-28T00:00:00Z",
+    "description": "This animation depicts Jupiter's planet wrapping cloud structure, commonly referred to as \"belts\" and \"zones,\" and the jet streams that encompass them. The belts (white bands) and zones (reddish bands) are separated by strong east-west winds, or jet streams (depicted by black arrows), that move in opposite directions. These jets penetrate about 1,800 miles (3,000 kilometers) below the cloud level of Jupiter. Other components of the winds including north-south and up-down movements – have been a mystery and have now been uncovered with the latest data from the microwave radiometer instrument aboard NASA's Juno spacecraft.  The base composite image of Jupiter was created from images obtained by NASA's Cassini spacecraft.  Movie available at https://photojournal.jpl.nasa.gov/catalog/PIA24964",
+    "description_508": "This animation depicts Jupiter's planet wrapping cloud structure, commonly referred to as belts and zones, and the jet streams that encompass them.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24964",
+    "secondary_creator": "NASA/JPL-Caltech/SSI/Weizmann Institute of Science",
+    "title": "Jets at Jupiter"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24964/PIA24964~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 634,
+    "size": 37000,
+    "height": 505
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24964/PIA24964~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 505,
+    "width": 634,
+    "size": 36864
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24971/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-28T00:00:00Z",
+    "description": "Jupiter's zonal winds, going in opposite directions, generate eddies of all sizes that manifest in storms swirling in the atmosphere. At the highest level \"pop-up clouds,\" the small, bright clouds that amass at the edge of one of these fronts, are thought to be parcels of air pushed up to the altitude at which ammonia ice condenses. Although they appear to be small, these bright storms may be 16 to 31 miles (25 to 50 kilometers) across.  This image captures Jupiter's North Temperate Belt. It was taken Oct. 16, 2021, at 10:11 a.m. PDT (1:11 p.m. EDT) as NASA's Juno spacecraft performed its 37th close flyby of Jupiter. At the time the image was taken, the spacecraft was about 2,454 miles (3,950 kilometers) from the planet's cloud tops at a latitude of 38.57 degrees. The original product is available here: https://www.missionjuno.swri.edu/junocam/processing?id=11484.  https://photojournal.jpl.nasa.gov/catalog/PIA24971",
+    "description_508": "This image captures Jupiter's North Temperate Belt. It was taken October 16, 2021, as NASA's Juno spacecraft performed its 37th close flyby of Jupiter.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24971",
+    "secondary_creator": "Image data: NASA/JPL-Caltech/SwRI/MSSS     Image processing: Brian Swift CC BY",
+    "title": "Jupiter Swirling Storms"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24971/PIA24971~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 789,
+    "size": 77000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24971/PIA24971~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 394,
+    "size": 25000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24971/PIA24971~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 394,
+    "size": 25000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24971/PIA24971~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1184,
+    "size": 158000,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24971/PIA24971~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2160,
+    "width": 1332,
+    "size": 197632
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24303/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-12-11T00:00:00Z",
+    "description": "In this annotated, graphic of Jupiter, small, bright \"pop-up\" clouds rise above the surrounding features in this cyclonic Jovian storm system, dubbed the \"Nautilus.\" The image at left, taken by the Hubble Space Telescope — which observed the storm — was taken on July 16, 2018. The Juno spacecraft's JunoCam captured the storm at higher resolution on July 16, 2018, during Juno's 13th science flyby of Jupiter. The image at right, a magnification of the JunoCam image, offers a closer view. Storms like these pop-up clouds are believed to be the tops of the extreme ammonia-water thunderclouds that produce \"shallow lightning\" and Jovian hailstones — or \"mushballs\" — high in Jupiter's atmosphere.  The solar-powered Jupiter explorer launched on Aug. 5, 2011 and went into orbit around the gas giant on July 4, 2016.  https://photojournal.jpl.nasa.gov/catalog/PIA24303",
+    "description_508": "In this annotated, graphic of Jupiter, small, bright pop-up clouds rise above the surrounding features in this cyclonic Jovian storm system.",
+    "keywords": [
+     "Juno",
+     "Jupiter"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24303",
+    "secondary_creator": "NASA/ESA/M.H. Wong (UC Berkeley) (HST image)/NASA/JPL-Caltech/SwRI/MSSS/Kevin M. Gill © CC BY (JunoCam image)",
+    "title": "Jupiter's Pop-up Clouds"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24303/PIA24303~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 29000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24303/PIA24303~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 29000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24303/PIA24303~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 773,
+    "width": 1374,
+    "size": 100000
+   }
+  ],
+  "_keyword": "jupiter"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25163/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2022-06-16T00:00:00Z",
+    "description": "This image of the Andromeda galaxy, or M31, includes data from the ESA (European Space Agency) Herschel mission, supplemented with data from ESA's retired Planck observatory and two retired NASA missions: the Infrared Astronomical Satellite (IRAS) and Cosmic Background Explorer (COBE).      Operated from 2009 to 2013, Herschel detected wavelengths of light in the far-infrared and microwave ranges, and was ideal for studying dust in nearby galaxies because it could capture small-scale structures in the dust clouds in high resolution. However, Herschel often couldn't detect light from diffuse dust clouds – especially in the outer regions of galaxies, where the gas and dust become sparse and thus fainter. As a result, the mission missed up to 30% of all the light given off by dust. Combining the Herschel observations with data from other observatories creates a more complete picture of the dust in the galaxy.      In the image, red indicates hydrogen gas; green indicates cold dust; and warmer dust is shown in blue. Launched in 1983, IRAS was the first space telescope to detect infrared light, setting the stage for future observatories like NASA's Spitzer Space Telescope and James Webb Space Telescope. The Planck observatory, launched in 2009, and COBE, launched in 1989, both studied the cosmic microwave background, or light left over from the big bang.      Red indicates hydrogen gas detected using the Green Bank Telescope in West Virginia, the Westerbork Synthesis Radio Telescope in the Netherlands, and the Institute for Radio Astronomy in the Millimeter Range 30-meter telescope in Spain.  https://photojournal.jpl.nasa.gov/catalog/PIA25163",
+    "description_508": "The Andromeda galaxy, or M31, is shown here in far-infrared and radio wavelengths of light.",
+    "keywords": [
+     "Herschel Space Observatory",
+     "Andromeda Galaxy"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25163",
+    "secondary_creator": "ESA/NASA/JPL-Caltech/GBT/WSRT/IRAM/C. Clark (STScI)",
+    "title": "Andromeda Galaxy Imaged by Herschel, Planck, IRAS, COBE"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25163/PIA25163~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 50000,
+    "height": 719
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25163/PIA25163~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 14000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25163/PIA25163~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 14000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25163/PIA25163~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 106000,
+    "height": 1079
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25163/PIA25163~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 4162,
+    "width": 7400,
+    "size": 1118208
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25165/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2022-06-16T00:00:00Z",
+    "description": "This image of the Triangulum galaxy, or M33, includes data from the ESA (European Space Agency) Herschel mission, supplemented with data from ESA's retired Planck observatory and two retired NASA missions: the Infrared Astronomical Satellite (IRAS) and Cosmic Background Explorer (COBE).      Operated from 2009 to 2013, Herschel detected wavelengths of light in the far-infrared and microwave ranges, and was ideal for studying dust in nearby galaxies because it could capture small-scale structures in the dust clouds in high resolution. However, Herschel often couldn't detect light from diffuse dust clouds – especially in the outer regions of galaxies, where the gas and dust become sparse and thus fainter. As a result, the mission missed up to 30% of all the light given off by dust. Combining the Herschel observations with data from other observatories creates a more complete picture of the dust in the galaxy.      In the image, red indicates hydrogen gas; green indicates cold dust; and warmer dust is shown in blue. Launched in 1983, IRAS was the first space telescope to detect infrared light, setting the stage for future observatories like NASA's Spitzer Space Telescope and James Webb Space Telescope. The Planck observatory, launched in 2009, and COBE, launched in 1989, both studied the cosmic microwave background, or light left over from the big bang.      The hydrogen gas was detected using the Green Bank Telescope in West Virginia, the Karl G. Jansky Very Large Array in New Mexico, and the Institute for Radio Astronomy in the Millimeter Range 30-meter telescope in Spain.  https://photojournal.jpl.nasa.gov/catalog/PIA25165",
+    "description_508": "The Triangulum galaxy, or M33, is shown here in far-infrared and radio wavelengths of light.",
+    "keywords": [
+     "Herschel Space Observatory",
+     "Triangulum Galaxy"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25165",
+    "secondary_creator": "ESA/NASA/JPL-Caltech/GBT/VLA/IRAM/C. Clark (STScI)",
+    "title": "Triangulum Galaxy Imaged by Herschel, Planck, IRAS, COBE"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25165/PIA25165~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 45000,
+    "height": 719
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25165/PIA25165~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 16000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25165/PIA25165~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 16000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25165/PIA25165~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 86000,
+    "height": 1079
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25165/PIA25165~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1350,
+    "width": 2401,
+    "size": 124928
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA26276/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2024-05-09T00:00:00Z",
+    "description": "This image from NASA's retired Spitzer Space Telescope highlights the stars and dust clouds in the Andromeda galaxy. One of Earth's nearest galactic neighbors, Andromeda spans a swath of sky nearly 3.8 degrees across, which is close to the width of eight full Moons lined up side by side. The area around the galaxy includes data from NASA's Wide-field Infrared Survey Explorer (WISE).  Spitzer observed infrared light, a range of wavelengths longer than what human eyes can detect. In this image, starlight glows blue and cyan (representing infrared wavelengths of 3.6 and 4.5 microns). Dust dominates the galaxy in red (8 microns). The longest wavelength detected by Spitzer (24 microns) gives an indication of the dust's temperature and is represented in green; it combines with the red to create orange and yellow, indicating regions where stars are forming.  https://photojournal.jpl.nasa.gov/catalog/PIA26276",
+    "description_508": "This image from NASA's retired Spitzer Space Telescope highlights the stars and dust clouds in the Andromeda galaxy.",
+    "keywords": [
+     "Spitzer Space Telescope",
+     "Andromeda"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA26276",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "The Infrared Face of the Andromeda Galaxy"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA26276/PIA26276~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 97000,
+    "height": 552
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA26276/PIA26276~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 276
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA26276/PIA26276~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 276
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA26276/PIA26276~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 222000,
+    "height": 828
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA26276/PIA26276~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1743,
+    "width": 4038,
+    "size": 8388608
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23641/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-01-08T00:00:00Z",
+    "description": "This graphic illustrates how a faraway quasar (an extremely bright region in the center of some distant galaxies) is altered by a massive foreground galaxy. The galaxy's powerful gravity warps and magnifies the quasar's light, producing four distorted images of the quasar.  Dark matter is an invisible substance that makes up the bulk of the universe's mass and creates the scaffolding upon which galaxies are built.  Quadruple images of a quasar rare because the background quasar and foreground galaxy require an almost perfect alignment.  https://photojournal.jpl.nasa.gov/catalog/PIA23641",
+    "description_508": "This graphic illustrates how a faraway quasar (an extremely bright region in the center of some distant galaxies) is altered by a massive foreground galaxy.",
+    "keywords": [
+     "Gravitational Lensing"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23641",
+    "secondary_creator": "NASA, ESA and D. Player (STScI)",
+    "title": "Gravitational Lensing Graphic"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23641/PIA23641~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 97000,
+    "height": 675
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23641/PIA23641~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 25000,
+    "height": 337
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23641/PIA23641~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 25000,
+    "height": 337
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23641/PIA23641~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 211000,
+    "height": 1012
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23641/PIA23641~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2160,
+    "width": 4096,
+    "size": 733000
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/art002e012588/collection.json",
+  "data": [
+   {
+    "center": "JSC",
+    "date_created": "2026-04-07T00:00:00Z",
+    "description": "art002e012588 (April 7, 2026) - A stunning snapshot in time. The Artemis II crew captured this breathtaking photo of our galaxy, the Milky Way. The Milky Way’s elegant spiral structure is dominated by just two arms wrapping off the ends of a central bar of stars. Spanning more than 100,000 light-years, Earth is located along one of the galaxy’s spiral arms, about halfway from the center. Credit: NASA",
+    "description_508": "Star Field from 200 000 nm_019A.NEF",
+    "keywords": [
+     "Artemis",
+     "Artemis II",
+     "Orion",
+     "Milky Way",
+     "Stars",
+     "Galaxy"
+    ],
+    "media_type": "image",
+    "nasa_id": "art002e012588",
+    "photographer": "NASA",
+    "title": "Starstruck"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/art002e012588/art002e012588~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 600064,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/art002e012588/art002e012588~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 265216,
+    "height": 853
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/art002e012588/art002e012588~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 62464,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/art002e012588/art002e012588~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 62464,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/art002e012588/art002e012588~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 5504,
+    "width": 8256,
+    "size": 14680064
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23410/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-01-08T00:00:00Z",
+    "description": "Each of these Hubble Space Telescope snapshots reveals four distorted images of a background quasar (an extremely bright region in the center of some distant galaxies) and its host galaxy surrounding the core of a foreground massive galaxy.  The gravity of the massive foreground galaxy acts like a magnifying glass by warping the quasar's light in an effect called gravitational lensing. Quasars are extremely distant cosmic \"streetlights\" produced by active black holes. Such quadruple images of quasars are rare because of the nearly exact alignment needed between the foreground galaxy and background quasar.  These images come from a study in which astronomers used the gravitational lensing effect to detect the smallest clumps of dark matter ever found. The clumps are located along the telescope's line of sight to the quasars as well as in and around the foreground lensing galaxies.  The presence of the dark matter concentrations alters the apparent brightness and position of each distorted quasar image. Astronomers compared these measurements with predictions of how the quasar images would look without the influence of the dark matter clumps. The researchers used these measurements to calculate the masses of the tiny dark matter concentrations.  Hubble's Wide Field Camera 3 captured the near-infrared light from each quasar and dispersed it into its component colors for study with spectroscopy. The images were taken between 2015 and 2018.  https://photojournal.jpl.nasa.gov/catalog/PIA23410",
+    "description_508": "Each snapshot shows four distorted images of a background quasar, surrounding the core of a massive foreground galaxy. The gravity of the foreground galaxy magnifies the quasar, an effect called gravitational lensing.",
+    "keywords": [
+     "Hubble Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23410",
+    "secondary_creator": "NASA, ESA, A. Nierenberg, T. Treu",
+    "title": "Quasars' Multiple Images Shed Light on Tiny Dark Matter Clumps"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23410/PIA23410~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 61000,
+    "height": 853
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23410/PIA23410~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23410/PIA23410~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 23000,
+    "height": 426
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23410/PIA23410~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1280,
+    "width": 1920,
+    "size": 112000
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23867/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-11-18T00:00:00Z",
+    "description": "The Blue Ring Nebula was discovered in 2004 by NASA's Galaxy Evolution Explorer (GALEX) mission. Astronomers think the nebula was created by the merger of two stars, and that we are seeing the system a few thousand years after the merger, when evidence of the collision is still apparent.  The blue light in the image shows the debris cloud created by the merger. As the hot cloud of material expanded into space and cooled down, it formed hydrogen molecules that collided with the interstellar medium (the particles occupying the space between stars). These collisions caused the hydrogen molecules to radiate far-ultraviolet light, which was detected by GALEX. Yellow indicates near-ultraviolet light, also detected by GALEX, which is emitted by the star at the center of the nebula and many surrounding stars.  Infrared light observed by NASA's Wide-field Infrared Survey Explorer (WISE) is also shown in red, and is primarily emitted by the central star. Detailed analysis of the WISE data revealed a ring of debris around the star â€“ further evidence of a merger.  Magenta indicates optical light — light visible to the human eye — collected using the Hale Telescope. This light comes from the shockwave at the front of the expanding debris cones. The optical light helped astronomers discover that the nebula actually consists of two cones moving away from the central star. The base of one cone is moving almost directly toward Earth, while the other is moving almost directly away, and the magenta light outlines the two bases. The blue region in the image shows where the cones overlap; the non-overlapping regions are too faint for GALEX to see. Figure A shows the orientation of the cones to Earth and the way they appear to overlap.  https://photojournal.jpl.nasa.gov/catalog/PIA23867",
+    "description_508": "The Blue Ring Nebula consists of two expanding cones of gas ejected into space by a stellar merger. As the gas cools, it forms hydrogen molecules that collide with particles in interstellar space, causing them to radiate far-ultraviolet light.",
+    "keywords": [
+     "Galaxy Evolution Explorer (GALEX)"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23867",
+    "secondary_creator": "NASA/JPL-Caltech/M. Seibert (Carnegie Institution for Science)/K. Hoadley (Caltech)/GALEX Team",
+    "title": "The Blue Ring Nebula"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 112000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 203000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2695,
+    "width": 4791,
+    "size": 744000
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24575/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-08-04T00:00:00Z",
+    "description": "This image shows galaxy Arp 148, captured by NASA's Spitzer and Hubble telescopes. Inside the white circle is specially-processed Spitzer data, which reveals infrared light from a supernova that is hidden by dust. Supernovae are massive stars that have exploded after running out of fuel. They radiate most brightly in visible light (the kind the human eye can detect), but these wavelengths are obscured by dust. Infrared light, however, can pass through dust.  The analysis of Arp 148 was part of an effort to find hidden supernovae in 40 dust-choked galaxies that also emit high levels of infrared light. These galaxies are known as luminous and ultra-luminous infrared galaxies (LIRGs and ULIRGs, respectively). The dust in LIRGs and ULIRGs absorbs optical light from objects like supernovae but allows infrared light from these same objects to pass through unobstructed for telescopes like Spitzer to detect.  https://photojournal.jpl.nasa.gov/catalog/PIA24575",
+    "description_508": "The image shows galaxy Arp 148, captured by NASA's Spitzer and Hubble telescopes. Specially processed Spitzer data is shown inside the white circle, revealing infrared light from a supernova hidden by dust.",
+    "keywords": [
+     "Hubble Space Telescope",
+     "Spitzer Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24575",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Hidden Supernova Spotted by Spitzer"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24575/PIA24575~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 62000,
+    "height": 719
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24575/PIA24575~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 14000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24575/PIA24575~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 14000,
+    "height": 359
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24575/PIA24575~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1001,
+    "width": 1780,
+    "size": 126000
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/collection.json",
+  "data": [
+   {
+    "album": [
+     "James_Webb_First_Images"
+    ],
+    "center": "STScI",
+    "date_created": "2022-07-12T00:00:00Z",
+    "description": "Thousands of galaxies flood this near-infrared image of galaxy cluster SMACS 0723. High-resolution imaging from NASA’s James Webb Space Telescope combined with a natural effect known as gravitational lensing made this finely detailed image possible.  First, focus on the galaxies responsible for the lensing: the bright white elliptical galaxy at the center of the image and smaller white galaxies throughout the image. Bound together by gravity in a galaxy cluster, they are bending the light from galaxies that appear in the vast distances behind them. The combined mass of the galaxies and dark matter act as a cosmic telescope, creating magnified, contorted, and sometimes mirrored images of individual galaxies.  Clear examples of mirroring are found in the prominent orange arcs to the left and right of the brightest cluster galaxy. These are lensed galaxies – each individual galaxy is shown twice in one arc. Webb’s image has fully revealed their bright cores, which are filled with stars, along with orange star clusters along their edges.  Not all galaxies in this field are mirrored – some are stretched. Others appear scattered by interactions with other galaxies, leaving trails of stars behind them.  Webb has refined the level of detail we can observe throughout this field. Very diffuse galaxies appear like collections of loosely bound dandelion seeds aloft in a breeze. Individual “pods” of star formation practically bloom within some of the most distant galaxies – the clearest, most detailed views of star clusters in the early universe so far.  One galaxy speckled with star clusters appears near the bottom end of the bright central star’s vertical diffraction spike – just to the right of a long orange arc. The long, thin ladybug-like galaxy is flecked with pockets of star formation. Draw a line between its “wings” to roughly match up its star clusters, mirrored top to bottom. Because this galaxy is so magnified and its individual star clusters are so crisp, researchers will be able to study it in exquisite detail, which wasn’t previously possible for galaxies this distant.  The galaxies in this scene that are farthest away – the tiniest galaxies that are located well behind the cluster – look nothing like the spiral and elliptical galaxies observed in the local universe. They are much clumpier and more irregular. Webb’s highly detailed image may help researchers measure the ages and masses of star clusters within these distant galaxies. This might lead to more accurate models of galaxies that existed at cosmic “spring,” when galaxies were sprouting tiny “buds” of new growth, actively interacting and merging, and had yet to develop into larger spirals. Ultimately, Webb’s upcoming observations will help astronomers better understand how galaxies form and grow in the early universe.  NIRCam was built by a team at the University of Arizona and Lockheed Martin’s Advanced Technology Center.  For a full array of Webb’s first images and spectra, including downloadable files, please visit: https://webbtelescope.org/news/first-images",
+    "keywords": [
+     "SMACS 0723-73"
+    ],
+    "media_type": "image",
+    "nasa_id": "webb_first_deep_field",
+    "photographer": "NASA ESA CSA STScI",
+    "title": "Webb_first_deep_field_SMACS_0723"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/webb_first_deep_field~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1254,
+    "size": 157000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/webb_first_deep_field~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 627,
+    "size": 53000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/webb_first_deep_field~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 627,
+    "size": 53000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/webb_first_deep_field~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1881,
+    "size": 326000,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/webb_first_deep_field/webb_first_deep_field~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2000,
+    "width": 1960,
+    "size": 5767168
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23687/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-04-28T00:00:00Z",
+    "description": "This animation shows two massive black holes in the OJ 287 galaxy. The smaller black hole orbits the larger one, which remains stationary in the animation and is surrounded by a disk of gas. When the smaller black hole crashes through the disk, it produces a flare brighter than 1 trillion stars. But the smaller black hole's orbit is elongated and moving relative to the disk, causing the flares to occur irregularly.  https://photojournal.jpl.nasa.gov/catalog/PIA23687",
+    "description_508": "This animation shows two massive black holes in the OJ 287 galaxy.",
+    "keywords": [
+     "Spitzer Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23687",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Animation of Black Hole Disk Flare in OJ 287"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23687/PIA23687~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 88000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23687/PIA23687~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 25000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23687/PIA23687~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 25000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23687/PIA23687~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 166000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23687/PIA23687~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2880,
+    "width": 5120,
+    "size": 633000
+   }
+  ],
+  "_keyword": "galaxy"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25433/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2022-11-11T00:00:00Z",
+    "description": "The dusty face of the Eagle Nebula and its surroundings are revealed in this image based on data from NASA's Wide Field Survey Explorer (WISE). WISE detects infrared light, or a range of wavelengths longer than what the human eye can see. This large star forming region is about 5,700 light years away from Earth and is most famous for being home to the the \"Pillars of Creation,\" a region famously imaged by NASA's Hubble and James Webb space telescopes. The WISE data reveals the entire structure of the nebula surrounding the pillars, which themselves can be seen as a faint yellow-green feature inside the white circle.  While the WISE view of the \"Pillars\" is not as sharp as those taken by Webb and Hubble, the telescope's wide field of view allows us to explore the extended nebula around it. When viewed in visible light, the dust is dark and opaque. In these infrared wavelengths, the dust becomes more translucent, and emits infrared light, shown in green, yellow, and red in this image.  The data used in this image came from WISE's primary mission which ran from 2009 to 2011. In 2013, NASA took the spacecraft out of hibernation and began using it to track and study near-Earth objects. The mission and the spacecraft were renamed NEOWISE. However, the data is still being used by astronomers to study objects and regions outside our solar system.  Blue and cyan are used to represent infrared light at wavelengths of 3.4 and 4.6 microns, while green and red display longer wavelengths of 12 and 22 microns, respectively.  Animation available at https://photojournal.jpl.nasa.gov/catalog/PIA25433",
+    "description_508": "The dusty face of the Eagle Nebula and its surroundings are revealed in this image based on data from NASA's Wide Field Survey Explorer (WISE).",
+    "keywords": [
+     "Wide-field Infrared Survey Explorer (WISE)",
+     "Eagle Nebula"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25433",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "The Eagle Nebula Observed by WISE"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25433/PIA25433~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 253000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25433/PIA25433~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 84000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25433/PIA25433~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 84000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25433/PIA25433~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 451000,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25433/PIA25433~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3400,
+    "width": 3400,
+    "size": 1009664
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/carina_nebula/collection.json",
+  "data": [
+   {
+    "album": [
+     "James_Webb_First_Images"
+    ],
+    "center": "STScI (Webb)",
+    "date_created": "2022-07-12T11:00:00Z",
+    "description": "What looks much like craggy mountains on a moonlit evening is actually the edge of a nearby, young, star-forming region NGC 3324 in the Carina Nebula. Captured in infrared light by the Near-Infrared Camera (NIRCam) on NASA’s James Webb Space Telescope, this image reveals previously obscured areas of star birth.  Called the Cosmic Cliffs, the region is actually the edge of a gigantic, gaseous cavity within NGC 3324, roughly 7,600 light-years away. The cavernous area has been carved from the nebula by the intense ultraviolet radiation and stellar winds from extremely massive, hot, young stars located in the center of the bubble, above the area shown in this image. The high-energy radiation from these stars is sculpting the nebula’s wall by slowly eroding it away.    NIRCam – with its crisp resolution and unparalleled sensitivity – unveils hundreds of previously hidden stars, and even numerous background galaxies. Several prominent features in this image are described below.  • The “steam” that appears to rise from the celestial “mountains” is actually hot, ionized gas and hot dust streaming away from the nebula due to intense, ultraviolet radiation.   • Dramatic pillars rise above the glowing wall of gas, resisting the blistering ultraviolet radiation from the young stars.  • Bubbles and cavities are being blown by the intense radiation and stellar winds of newborn stars.  • Protostellar jets and outflows, which appear in gold, shoot from dust-enshrouded, nascent stars.  • A “blow-out” erupts at the top-center of the ridge, spewing gas and dust into the interstellar medium.   • An unusual “arch” appears, looking like a bent-over cylinder.  This period of very early star formation is difficult to capture because, for an individual star, it lasts only about 50,000 to 100,000 years – but Webb’s extreme sensitivity and exquisite spatial resolution have chronicled this rare event.  Located roughly 7,600 light-years away, NGC 3324 was first catalogued by James Dunlop in 1826. Visible from the Southern Hemisphere, it is located at the northwest corner of the Carina Nebula (NGC 3372), which resides in the constellation Carina. The Carina Nebula is home to the Keyhole Nebula and the active, unstable supergiant star called Eta Carinae.   NIRCam was built by a team at the University of Arizona and Lockheed Martin’s Advanced Technology Center.",
+    "keywords": [
+     "NGC 3324",
+     "Carina Nebula"
+    ],
+    "media_type": "image",
+    "nasa_id": "carina_nebula",
+    "photographer": "NASA ESA CSA STScI",
+    "title": "James Webb Space Telescope NIRCam Image of the “Cosmic Cliffs” in Carina Nebula"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 197000,
+    "height": 741
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 53000,
+    "height": 370
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 53000,
+    "height": 370
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 389000,
+    "height": 1111
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/carina_nebula/carina_nebula~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1158,
+    "width": 2000,
+    "size": 3460300
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24577/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-08-17T00:00:00Z",
+    "description": "These four nebulae (star-forming clouds of gas and dust) are known for their breathtaking beauty: the Eagle Nebula (which contains the Pillars of Creation), the Omega Nebula, the Trifid Nebula, and the Lagoon Nebula. In the 1950s, a team of astronomers made rough distance measurements to some of the stars in these nebulae and were able to infer the existence of the Sagittarius Arm. Their work provided some of the first evidence of our galaxy's spiral structure. In a new study, astronomers have shown that these nebulae are part of a substructure within the arm that is angled differently from the rest of the arm.      A key property of spiral arms is how tightly they wind around a galaxy. This characteristic is measured by the arm's pitch angle. A circle has a pitch angle of 0 degrees, and as the spiral becomes more open, the pitch angle increases. Most models of the Milky Way suggest that the Sagittarius Arm forms a spiral that has a pitch angle of about 12 degrees, but the protruding structure has a pitch angle of nearly 60 degrees.      Similar structures – sometimes called spurs or feathers – are commonly found jutting out of the arms of other spiral galaxies. For decades scientists have wondered whether our Milky Way's spiral arms are also dotted with these structures or if they are relatively smooth.  https://photojournal.jpl.nasa.gov/catalog/PIA24577",
+    "description_508": "Shown here are the Eagle, Omega, Triffid, and Lagoon Nebulae, imaged by NASA's infrared Spitzer Space Telescope. These nebulae are part of a structure within the Milky Way's Sagittarius Arm that is poking out from the arm at a dramatic angle.",
+    "keywords": [
+     "Spitzer Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24577",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Four Famous Nebulae"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24577/PIA24577~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 253000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24577/PIA24577~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 63000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24577/PIA24577~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 63000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24577/PIA24577~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 536000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24577/PIA24577~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2700,
+    "width": 4800,
+    "size": 2400000
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA24579/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2021-10-25T00:00:00Z",
+    "description": "This colorful image shows a nebula – a cloud of gas and dust in space – captured by NASA's now-retired Spitzer Space Telescope located is in the constellation Sagittarius, along the plane of the Milky Way, which was as part of Spitzer's GLIMPSE Survey (short for Galactic Legacy Infrared Mid-Plane Survey Extraordinaire). With a little imagination, you might be able to see the outlines of Godzilla.  Stars in the upper right (where this cosmic Godzilla's eyes and snout would be) are an unknown distance from Earth but within our galaxy. Located about 7,800 light-years from Earth, the bright region in the lower left (Godzilla's right hand) is known as W33.  When viewed in visible light, this region is almost entirely obscured by dust clouds. But infrared light (wavelengths longer than what our eyes can perceive) can penetrate the clouds, revealing hidden regions like this one.  Blue, cyan, green, and red are used to represent different wavelengths of infrared light; yellow and white are combinations of those wavelengths. Blue and cyan represent wavelengths primarily emitted by stars; dust and organic molecules called hydrocarbons appear green; and warm dust that's been heated by stars or supernovae (exploding stars) appears red.  When massive stars die and explode into supernovae, they reshape the regions around them, carving them into different shapes; they also push material together and initiate the birth of new stars that continue the cycle.  https://photojournal.jpl.nasa.gov/catalog/PIA24579",
+    "description_508": "NASA's Spitzer Space Telescope imaged this cloud of gas and dust. The colors represent different wavelengths of infrared light and can reveal such features as places where radiation from stars had heated the surrounding material.",
+    "keywords": [
+     "Spitzer Space Telescope",
+     "nebula"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA24579",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Godzilla Nebula Imaged by Spitzer"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24579/PIA24579~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 337000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24579/PIA24579~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 82000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24579/PIA24579~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 82000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24579/PIA24579~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1919,
+    "size": 743000,
+    "height": 1919
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA24579/PIA24579~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3542,
+    "width": 3542,
+    "size": 2202009
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/collection.json",
+  "data": [
+   {
+    "album": [
+     "James_Webb_First_Images"
+    ],
+    "center": "STScI",
+    "date_created": "2022-07-12T11:00:00Z",
+    "description": "This side-by-side comparison shows observations of the Southern Ring Nebula in near-infrared light, at left, and mid-infrared light, at right, from NASA’s Webb Telescope.  This scene was created by a white dwarf star – the remains of a star like our Sun after it shed its outer layers and stopped burning fuel though nuclear fusion. Those outer layers now form the ejected shells all along this view.  In the Near-Infrared Camera (NIRCam) image, the white dwarf appears to the lower left of the bright, central star, partially hidden by a diffraction spike. The same star appears – but brighter, larger, and redder – in the Mid-Infrared Instrument (MIRI) image. This white dwarf star is cloaked in thick layers of dust, which make it appear larger.   The brighter star in both images hasn’t yet shed its layers. It closely orbits the dimmer white dwarf, helping to distribute what it’s ejected.  Over thousands of years and before it became a white dwarf, the star periodically ejected mass – the visible shells of material. As if on repeat, it contracted, heated up – and then, unable to push out more material, pulsated. Stellar material was sent in all directions – like a rotating sprinkler – and provided the ingredients for this asymmetrical landscape.  Today, the white dwarf is heating up the gas in the inner regions – which appear blue at left and red at right. Both stars are lighting up the outer regions, shown in orange and blue, respectively.  The images look very different because NIRCam and MIRI collect different wavelengths of light. NIRCam observes near-infrared light, which is closer to the visible wavelengths our eyes detect. MIRI goes farther into the infrared, picking up mid-infrared wavelengths. The second star more clearly appears in the MIRI image, because this instrument can see the gleaming dust around it, bringing it more clearly into view.  The stars – and their layers of light – steal more attention in the NIRCam image, while dust plays the lead in the MIRI image, specifically dust that is illuminated.   Peer at the circular region at the center of both images. Each contains a wobbly, asymmetrical belt of material. This is where two “bowls” that make up the nebula meet. (In this view, the nebula is at a 40-degree angle.) This belt is easier to spot in the MIRI image – look for the yellowish circle – but is also visible in the NIRCam image.  The light that travels through the orange dust in the NIRCam image – which look like spotlights – disappear at longer infrared wavelengths in the MIRI image.  In near-infrared light, stars have more prominent diffraction spikes because they are so bright at these wavelengths. In mid-infrared light, diffraction spikes also appear around stars, but they are fainter and smaller (zoom in to spot them).  Physics is the reason for the difference in the resolution of these images. NIRCam delivers high-resolution imaging because these wavelengths of light are shorter. MIRI supplies medium-resolution imagery because its wavelengths are longer – the longer the wavelength, the coarser the images are. But both deliver an incredible amount of detail about every object they observe – providing never-before-seen vistas of the universe.  For a full array of Webb’s first images and spectra, including downloadable files, please visit: https://webbtelescope.org/news/first-images   NIRCam was built by a team at the University of Arizona and Lockheed Martin’s Advanced Technology Center.  MIRI was contributed by ESA and NASA, with the instrument designed and built by a consortium of nationally funded European Institutes (The MIRI European Consortium) in partnership with JPL and the University of Arizona.",
+    "keywords": [
+     "NGC 3132",
+     "Southern Ring Nebula",
+     "Eight-Burst Nebula"
+    ],
+    "media_type": "image",
+    "nasa_id": "southern_ring_nebula",
+    "photographer": "NASA ESA CSA STScI",
+    "title": "James Webb Space Telescope Southern Ring Nebula (NIRCam and MIRI Images Side by Side)"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/southern_ring_nebula~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 73000,
+    "height": 593
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/southern_ring_nebula~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 22000,
+    "height": 296
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/southern_ring_nebula~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 22000,
+    "height": 296
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/southern_ring_nebula~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 141000,
+    "height": 890
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/southern_ring_nebula/southern_ring_nebula~orig.png",
+    "rel": "canonical",
+    "render": "image",
+    "height": 928,
+    "width": 2000,
+    "size": 2202009
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA25434/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2022-11-22T00:00:00Z",
+    "description": "This new image of the Orion Nebula produced using previously released data from three telescopes shows two enormous caverns carved out by unseen giant stars that can release up to a million times more light than our Sun. All that radiation breaks apart dust grains there, helping to create the pair of cavities. Much of the remaining dust is swept away when the stars produce wind or when they die explosive deaths as supernovae.      This infrared image shows dust but no stars.      Blue light indicates warm dust heated by unseen massive stars. Observed in infrared light – a range of wavelengths outside what human eyes can detect – the views were provided by NASA's retired Spitzer Space Telescope and the Wide-Field Infrared Survey Explorer (WISE), which now operates under the moniker NEOWISE. Spitzer and WISE were both managed by NASA's Jet Propulsion Laboratory in Southern California, which is a division of Caltech.      Around the edge of the two cavernous regions, the dust that appears green is slightly cooler. Red indicates cold dust that reaches temperatures of about minus 440 Fahrenheit (minus 260 Celsius). The cold dust appears mostly on the outskirts of the dust cloud, away from the regions where stars form. The red and green light shows data from the now-retired Herschel Space Telescope, an ESA (European Space Agency) observatory that captured wavelengths in the far-infrared and microwave ranges, where cold dust radiates.      In between the two hollow regions are orange filaments where dust condenses and forms new stars. Over time, these filaments may produce new giant stars that will once again reshape the region.  https://photojournal.jpl.nasa.gov/catalog/PIA25434",
+    "description_508": "This infrared image of the Orion Nebula features plenty of dust but no stars. In these infrared wavelengths, it's possible to see hot spots where new stars are forming, while unseen bright, massive stars have carved out caverns of empty space.",
+    "keywords": [
+     "Herschel Space Observatory",
+     "Spitzer Space Telescope",
+     "Wide-field Infrared Survey Explorer (WISE)",
+     "Orion Nebula"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA25434",
+    "secondary_creator": "ESA/NASA/JPL-Caltech",
+    "title": "Orion Nebula in Infrared"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25434/PIA25434~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 73000,
+    "height": 1083
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25434/PIA25434~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 26000,
+    "height": 541
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25434/PIA25434~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 26000,
+    "height": 541
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25434/PIA25434~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 133000,
+    "height": 1624
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA25434/PIA25434~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 7646,
+    "width": 9036,
+    "size": 1602560
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23409/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-01-07T00:00:00Z",
+    "description": "In this composite image of the Omega Nebula, SOFIA detected the blue areas (20 microns) near the center, revealing gas as it's heated by massive stars located at the center, near the bend, and the green areas (37 microns) that trace dust as it's warmed both by massive stars and nearby newborn stars. The nine never-before-seen protostars were found primarily in the southern areas. The red areas near the edge represent cold dust that was detected by the Herschel Space Telescope (70 microns), while the white star field was detected by the Spitzer Space Telescope (3.6 microns). The space telescopes could not observe the blue and green regions in such detail because the detectors were saturated. SOFIA's view reveals evidence that parts of the nebula formed separately to create the swan-like shape seen today.  https://photojournal.jpl.nasa.gov/catalog/PIA23409",
+    "description_508": "In this composite image of the Omega, or Swan, Nebula, SOFIA's view reveals evidence that parts of the nebula formed separately to create the swan-like shape seen today.",
+    "keywords": [
+     "Stratospheric Observatory for Infrared Astronomy (SOFIA)"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23409",
+    "secondary_creator": "NASA/SOFIA/Lim, De Buizer, & Radomski et al.; ESA/Herschel; NASA/JPL-Caltech",
+    "title": "SOFIA Reveals How the Swan Nebula Hatched"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23409/PIA23409~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1104,
+    "size": 126000,
+    "height": 1280
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23409/PIA23409~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 552,
+    "size": 49000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23409/PIA23409~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 552,
+    "size": 49000,
+    "height": 640
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23409/PIA23409~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1656,
+    "size": 217000,
+    "height": 1920
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23409/PIA23409~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 3022,
+    "width": 2608,
+    "size": 392000
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23646/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-01-27T00:00:00Z",
+    "description": "This image from NASA's Spitzer Space Telescope shows the Tarantula Nebula in two wavelengths of infrared light, each represented by a different color. The red color at the heart of the nebula shows the presence of particularly hot gas emitting infrared light at a wavelength of 4.5 micrometers. The blue regions are dust composed of molecules called polycyclic aromatic hydrocarbons (PAHs), which are also found in ash from coal, wood and oil fires on Earth. Regions emitting both wavelengths appear white.  https://photojournal.jpl.nasa.gov/catalog/PIA23646",
+    "description_508": "This image from NASA's Spitzer Space Telescope shows the Tarantula Nebula in two wavelengths of infrared light, each represented by a different color.",
+    "keywords": [
+     "Spitzer Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23646",
+    "secondary_creator": "NASA/JPL-Caltech",
+    "title": "Tarantula Nebula Spitzer 2-Color Image"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23646/PIA23646~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 221000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23646/PIA23646~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 56000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23646/PIA23646~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 56000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23646/PIA23646~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 453000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23646/PIA23646~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 4968,
+    "width": 8832,
+    "size": 4800000
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23867/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-11-18T00:00:00Z",
+    "description": "The Blue Ring Nebula was discovered in 2004 by NASA's Galaxy Evolution Explorer (GALEX) mission. Astronomers think the nebula was created by the merger of two stars, and that we are seeing the system a few thousand years after the merger, when evidence of the collision is still apparent.  The blue light in the image shows the debris cloud created by the merger. As the hot cloud of material expanded into space and cooled down, it formed hydrogen molecules that collided with the interstellar medium (the particles occupying the space between stars). These collisions caused the hydrogen molecules to radiate far-ultraviolet light, which was detected by GALEX. Yellow indicates near-ultraviolet light, also detected by GALEX, which is emitted by the star at the center of the nebula and many surrounding stars.  Infrared light observed by NASA's Wide-field Infrared Survey Explorer (WISE) is also shown in red, and is primarily emitted by the central star. Detailed analysis of the WISE data revealed a ring of debris around the star â€“ further evidence of a merger.  Magenta indicates optical light — light visible to the human eye — collected using the Hale Telescope. This light comes from the shockwave at the front of the expanding debris cones. The optical light helped astronomers discover that the nebula actually consists of two cones moving away from the central star. The base of one cone is moving almost directly toward Earth, while the other is moving almost directly away, and the magenta light outlines the two bases. The blue region in the image shows where the cones overlap; the non-overlapping regions are too faint for GALEX to see. Figure A shows the orientation of the cones to Earth and the way they appear to overlap.  https://photojournal.jpl.nasa.gov/catalog/PIA23867",
+    "description_508": "The Blue Ring Nebula consists of two expanding cones of gas ejected into space by a stellar merger. As the gas cools, it forms hydrogen molecules that collide with particles in interstellar space, causing them to radiate far-ultraviolet light.",
+    "keywords": [
+     "Galaxy Evolution Explorer (GALEX)"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23867",
+    "secondary_creator": "NASA/JPL-Caltech/M. Seibert (Carnegie Institution for Science)/K. Hoadley (Caltech)/GALEX Team",
+    "title": "The Blue Ring Nebula"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 112000,
+    "height": 720
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 41000,
+    "height": 360
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~large.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1920,
+    "size": 203000,
+    "height": 1080
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23867/PIA23867~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 2695,
+    "width": 4791,
+    "size": 744000
+   }
+  ],
+  "_keyword": "nebula"
+ },
+ {
+  "href": "https://images-assets.nasa.gov/image/PIA23650/collection.json",
+  "data": [
+   {
+    "center": "JPL",
+    "date_created": "2020-04-17T00:00:00Z",
+    "description": "This series of image taken by NASA's Spitzer Space Telescope on Jan. 25, 2020, shows part of the California Nebula, which is located about 1,000 light-years from Earth. This is the final mosaic taken by the mission before it was decommissioned on Jan. 30, 2020.  Spitzer's infrared detectors reveal the presence of warm dust, similar to soot, mixed in with the gas. The dust absorbs visible and ultraviolet light from nearby stars and then re-emits the absorbed energy as infrared light.  The image displays Spitzer's observations much the way that research astronomers would view them: From 2009 to 2020, Spitzer operated two detectors simultaneously that imaged adjacent areas of the sky. The detectors captured different wavelengths of infrared light (referred to by their physical wavelength): 3.6 micrometers (shown in cyan) and 4.5 micrometers (shown in red). Different wavelengths of light can reveal different objects or features. Spitzer would scan the sky, taking multiple pictures in a grid pattern, so that both detectors would image the region at the center of the grid. By combining those images into a mosaic, it was possible to see what a given region looked like in multiple wavelengths, such as in the gray-hued part of the image above.   https://photojournal.jpl.nasa.gov/catalog/PIA23650",
+    "description_508": "NASA's Spitzer Space Telescope took this image of the California Nebula on Jan. 25, 2020, five days before the spacecraft was decommissioned.",
+    "keywords": [
+     "Spitzer Space Telescope"
+    ],
+    "media_type": "image",
+    "nasa_id": "PIA23650",
+    "secondary_creator": "NASA/JPL-Caltech/Palomar Digitized Sky Survey",
+    "title": "Spitzer California Nebula Mosaic"
+   }
+  ],
+  "links": [
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23650/PIA23650~medium.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 1280,
+    "size": 127000,
+    "height": 733
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23650/PIA23650~small.jpg",
+    "rel": "alternate",
+    "render": "image",
+    "width": 640,
+    "size": 36000,
+    "height": 366
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23650/PIA23650~thumb.jpg",
+    "rel": "preview",
+    "render": "image",
+    "width": 640,
+    "size": 36000,
+    "height": 366
+   },
+   {
+    "href": "https://images-assets.nasa.gov/image/PIA23650/PIA23650~orig.jpg",
+    "rel": "canonical",
+    "render": "image",
+    "height": 1902,
+    "width": 3317,
+    "size": 741000
+   }
+  ],
+  "_keyword": "nebula"
+ }
+]
