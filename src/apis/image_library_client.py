@@ -36,19 +36,30 @@ def create_retry_session():
     return session
 
 
-def fetch_nasa_library(query="Mars", page=1, start_year=2020, end_year=2026):
-    """Search NASA Image Library within a specified year range."""
+def fetch_nasa_library(
+    query,
+    page=1,
+    start_year=None,
+    end_year=None,
+):
+    """Search NASA Image Library with optional year filters."""
+
+    params = {
+        "q": query,
+        "media_type": "image",
+        "page": page,
+    }
+
+    if start_year is not None:
+        params["year_start"] = start_year
+
+    if end_year is not None:
+        params["year_end"] = end_year
 
     with create_retry_session() as session:
         response = session.get(
             f"{NASA_LIBRARY_API_URL.rstrip('/')}/search",
-            params={
-                "q": query,
-                "media_type": "image",
-                "page": page,
-                "year_start": start_year,
-                "year_end": end_year,
-            },
+            params=params,
             timeout=REQUEST_TIMEOUT,
         )
 
@@ -57,12 +68,12 @@ def fetch_nasa_library(query="Mars", page=1, start_year=2020, end_year=2026):
 
 
 def fetch_nasa_library_pages(
-    query="Mars",
-    max_pages=2,
-    start_year=2020,
-    end_year=2026,
+    query,
+    max_pages=100,
+    start_year=None,
+    end_year=None,
 ):
-    """Fetch multiple pages of NASA Image Library results."""
+    """Fetch up to max_pages of NASA Image Library results."""
 
     all_items = []
 
@@ -77,9 +88,17 @@ def fetch_nasa_library_pages(
         items = data.get("collection", {}).get("items", [])
 
         if not items:
+            print(f"[{query}] No more results at page {page}.")
             break
 
         all_items.extend(items)
+
+        print(
+            f"[{query}] Page {page}/{max_pages}: "
+            f"{len(items)} records fetched."
+        )
+
+    print(f"[{query}] Total records fetched: {len(all_items)}")
 
     return {
         "collection": {
