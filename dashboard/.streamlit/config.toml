@@ -1,0 +1,26 @@
+# Dashboard theme ("Starlight Observatory"). Streamlit reads this file because it
+# sits next to app.py, so `python -m streamlit run dashboard/app.py` picks it up.
+[theme]
+base = "light"
+primaryColor = "#2B7CB3"
+backgroundColor = "#F5F8FC"
+secondaryBackgroundColor = "#EDF3F9"
+textColor = "#17324D"
+linkColor = "#2B7CB3"
+borderColor = "#D9E5EE"
+baseRadius = "10px"
+showWidgetBorder = true
+
+# Deep-navy sidebar with light text.
+[theme.sidebar]
+backgroundColor = "#102941"
+secondaryBackgroundColor = "#173554"
+textColor = "#DCE7F2"
+primaryColor = "#5DAFDE"
+borderColor = "#1F4063"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
