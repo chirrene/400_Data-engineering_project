@@ -1,0 +1,103 @@
+# NASA Space Explorer: one command starts the whole pipeline.
+#
+#   cp .env.example .env      # optional: defaults work as-is
+#   docker compose up --build
+#
+#   Airflow UI   http://localhost:8080   (admin / admin unless changed in .env)
+#   Dashboard    http://localhost:8501
+#   PostgreSQL   localhost:5433          (nasa / nasa, database "nasa")
+#
+# Everything runs locally; nothing here touches the team's cloud database.
+
+name: nasa-space-explorer
+
+x-database-url: &database-url
+  DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-nasa}:${POSTGRES_PASSWORD:-nasa}@postgres:5432/${POSTGRES_DB:-nasa}
+
+services:
+  postgres:
+    image: postgres:16.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-nasa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nasa}
+      POSTGRES_DB: ${POSTGRES_DB:-nasa}
+    ports:
+      # 5433 on the host so it doesn't clash with a Postgres you already run.
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres-init/00_airflow_db.sql:/docker-entrypoint-initdb.d/00_airflow_db.sql:ro
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-nasa} -d ${POSTGRES_DB:-nasa}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  airflow:
+    build:
+      context: .
+      dockerfile: docker/airflow.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *database-url
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER:-nasa}:${POSTGRES_PASSWORD:-nasa}@postgres:5432/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "True"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "False"
+      PYTHONPATH: /opt/airflow
+      DATA_DIR: /opt/airflow/data
+      APOD_START_DATE: ${APOD_START_DATE:-2020-01-01}
+      LIBRARY_KEYWORDS: ${LIBRARY_KEYWORDS:-mercury,venus,earth,mars,jupiter,saturn,uranus,neptune,galaxy}
+      LIBRARY_YEAR_START: ${LIBRARY_YEAR_START:-}
+      LIBRARY_YEAR_END: ${LIBRARY_YEAR_END:-}
+      LIBRARY_MAX_PAGES: ${LIBRARY_MAX_PAGES:-2}
+      NASA_OFFLINE: ${NASA_OFFLINE:-0}
+      AIRFLOW_ADMIN_USER: ${AIRFLOW_ADMIN_USER:-admin}
+      AIRFLOW_ADMIN_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-admin}
+    command:
+      - bash
+      - -c
+      - |
+        airflow db migrate &&
+        (airflow users create --role Admin --username "$$AIRFLOW_ADMIN_USER" \
+           --password "$$AIRFLOW_ADMIN_PASSWORD" --firstname Admin --lastname User \
+           --email admin@example.com || true) &&
+        (airflow scheduler &) &&
+        exec airflow webserver
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./sql:/opt/airflow/sql:ro
+      - ./tests/fixtures:/opt/airflow/tests/fixtures:ro
+      - airflow-data:/opt/airflow/data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard.Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *database-url
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  airflow-data:

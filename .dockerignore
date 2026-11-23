@@ -28,3 +28,8 @@ __pycache__/
 
 # Tests and local cache
 .pytest_cache/
+
+# Pipeline outputs and local Airflow state
+data/
+.airflow/
+.airflow-test/
