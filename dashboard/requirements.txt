@@ -1,0 +1,10 @@
+requests
+pandas
+python-dotenv
+streamlit
+plotly
+networkx
+pytest
+SQLAlchemy
+psycopg2-binary
+nbformat>=5.0
