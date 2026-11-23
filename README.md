@@ -1,305 +1,191 @@
 # 🚀 NASA Space Explorer
 
-An end-to-end data engineering pipeline for NASA astronomy media: ingest, clean, validate, store and explore metadata from two public NASA APIs.
+An end-to-end data engineering project that collects, processes, stores, and explores NASA astronomy media metadata.
 
-**Final group project · Topics in Data Engineering · MS in Machine Learning & Data Science, Northwestern University**
+**Final group project · Topics in Data Engineering · MS in Machine Learning & Data Science · Northwestern University**
 
-> **Status:** In development. API ingestion, normalization and validation work; PostgreSQL, Airflow, Docker Compose and the Streamlit dashboard are in progress. See [Project status](#project-status).
-
----
-
-## Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Quick start](#quick-start)
-- [Usage](#usage)
-- [Repository structure](#repository-structure)
-- [Data model](#data-model)
-- [Data quality and testing](#data-quality-and-testing)
-- [Project status](#project-status)
-- [Team](#team)
-- [Contributing](#contributing)
-- [Data sources and attribution](#data-sources-and-attribution)
-
----
+**Dashboard:** [NASA Space Explorer](https://nasa-explorer-mlds.streamlit.app/)
 
 ## Overview
 
-NASA Space Explorer collects media metadata from two NASA sources, standardizes it into one schema, and makes it explorable through a SQL-backed Streamlit app.
+NASA Space Explorer combines data engineering, database management, workflow automation, exploratory data analysis (EDA), and interactive visualization. The project uses metadata from NASA's public APIs to build a reproducible pipeline and a user-facing dashboard.
 
-| Source | Endpoint | What we collect |
-| --- | --- | --- |
-| Astronomy Picture of the Day (APOD) | `https://science.nasa.gov/wp-json/wp/v2/apod-basic` | Daily feature: date, title, explanation, media type, image URL, credit |
-| NASA Image and Video Library | `https://images-api.nasa.gov/search` | Images by keyword and year: title, date, description, NASA ID, links, center, location, photographer, keywords |
+| Data source | Purpose |
+| --- | --- |
+| NASA Astronomy Picture of the Day (APOD) | Featured astronomy media, descriptions, dates, and credits |
+| NASA Image & Video Library | Searchable image metadata, titles, dates, NASA identifiers, image links, and keywords |
 
-**Target period:** 2020–2026, subject to data availability.
+The project collects metadata and image URLs, rather than downloading the full-resolution media archive.
 
-### Goals
+### Project objectives
 
-- **Ingest** media metadata from NASA APIs, with retries and pagination
-- **Transform** nested JSON into one clean, standardized schema
-- **Validate** required fields and dates, and detect duplicates
-- **Store** normalized records in PostgreSQL
-- **Orchestrate** the pipeline with Apache Airflow
-- **Reproduce** the environment with Conda, Docker and Docker Compose
-- **Explore** coverage, quality and trends through team EDA
-- **Present** findings in an interactive, SQL-backed Streamlit dashboard
+- Collect NASA media metadata through API integration.
+- Standardize and validate data for consistent downstream use.
+- Store and query structured records in PostgreSQL.
+- Coordinate repeatable pipeline tasks using Apache Airflow and Docker.
+- Analyze patterns and data quality through EDA.
+- Present results through an interactive Streamlit dashboard.
 
----
-
-## Architecture
+## Architecture and workflow
 
 ```mermaid
 flowchart TD
-    A[NASA APOD API] --> C[API ingestion]
-    B[NASA Image and Video Library API] --> C
-    C --> D[Raw JSON]
-    D --> E[Normalization and cleaning]
-    E --> F[Date filtering and data quality]
-    F --> G[(PostgreSQL)]
-    G --> H[SQL queries and team EDA]
-    G --> I[Streamlit dashboard]
-    H -. informs metrics, filters and charts .-> I
+    A[NASA APIs] --> B[API ingestion]
+    B --> C[Raw JSON storage]
+    C --> D[Normalization and data cleaning]
+    D --> E[Validated datasets]
+    E --> F[(PostgreSQL)]
+    F --> G[SQL and EDA]
+    F --> H[Streamlit dashboard]
+    G -. informs analysis and charts .-> H
+    I[Airflow orchestration] -. coordinates pipeline tasks .-> B
+    I -. coordinates pipeline tasks .-> F
+    J[Docker / Docker Compose] -. runtime environment .-> I
 ```
 
-- **Airflow** orchestrates `fetch → normalize → validate → load`.
-- **Docker Compose** runs and connects the pipeline services.
-- **The dashboard queries PostgreSQL directly.** EDA notebooks shape its metrics and charts, but are not re-run when a page loads.
-
-### Tech stack
-
-| Category | Tools |
+| Stage | Summary |
 | --- | --- |
-| Language | Python 3.11 |
-| API and config | `requests`, `python-dotenv` |
-| Processing | Python, Pandas |
-| Storage | PostgreSQL |
-| Orchestration | Apache Airflow |
-| Infrastructure | Conda, Docker, Docker Compose |
-| Analysis and UI | Jupyter, Plotly, Streamlit |
-| Testing | Pytest |
+| Extract | Query NASA APIs, handle pagination and retries, and save source responses. |
+| Transform | Flatten nested JSON, standardize fields, and create consistent records. |
+| Validate & clean | Check data quality, handle missing values, and remove duplicate image records. |
+| Load | Prepare and load structured datasets into PostgreSQL. |
+| Orchestrate | Coordinate pipeline execution using Airflow and containerized services. |
+| Analyze & visualize | Explore the data using SQL/EDA and present insights in Streamlit. |
 
----
+Airflow coordinates the relevant processing stages; it is not a data transformation that runs after the dashboard. The diagram represents the overall system architecture, not a claim that every integration path has been independently tested.
 
-## Quick start
+## Data coverage
 
-### Prerequisites
+The Image & Video Library collection covers nine search topics: **Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune, and Galaxy**.
 
-- Git
-- Conda (Anaconda or Miniconda)
-- Docker Desktop, for container testing
+**Collection update:** Earth and Mars have since been extended beyond the earlier 100-page collection cap, and the team reports that both searches have now been fully fetched. Consequently, the earlier **32,695 collected records / 31,525 unique images** describe a previous processing run, not the current full dataset. Updated collection totals, deduplicated counts, and quality metrics should be taken from the latest generated reports after reprocessing.
 
-### Set up
+The earlier search snapshot reported **80,811 combined results** across nine topic queries. This is a sum of keyword-search hits, not a count of unique NASA images; searches can overlap and NASA's reported totals can change. The team should verify the latest per-topic counts against the saved raw files and API responses before reporting final statistics.
+
+**Interpretation note:** Keyword matches do not always indicate a planet as a scientific subject (for example, “Mars” can refer to a place and “Saturn” to a rocket). Counts from keyword searches should not be presented as unbiased measures of NASA exploration activity.
+
+## Technology stack
+
+| Area | Tools |
+| --- | --- |
+| Programming and data processing | Python, Requests, Pandas |
+| Data formats | JSON, JSONL |
+| Database and querying | PostgreSQL, SQL |
+| Orchestration and infrastructure | Apache Airflow, Docker, Docker Compose |
+| Analysis and visualization | Jupyter, Plotly, Streamlit |
+| Development and testing | Git, GitHub, Conda, Pytest |
+
+## Getting started
+
+### Local setup
+
+From the repository root:
 
 ```bash
-git clone https://github.com/chirrene/400_Data-engineering_project.git
+git clone https://github.com/nasa-space-explorer-team/400_Data-engineering_project.git
 cd 400_Data-engineering_project
 
 conda env create -f environment.yml
 conda activate nasa-space-explorer
 python -m pip install -r requirements.txt
 
-cp .env.example .env   # then fill in your local values
+cp .env.example .env
+# Add local configuration values to .env; never commit real credentials.
 ```
 
-> **Note:** Work in progress lives on feature branches until it is merged. If a module below is missing, check out the branch that holds it (for example `feature/nasa-apis`).
+Some features require access to a configured PostgreSQL instance, container services, or application secrets. Consult the relevant service configuration in the repository.
 
-### Run with Docker
+### Run local data processing
 
 ```bash
-docker build -t nasa-space-explorer .
-docker run --rm nasa-space-explorer
-# Expected output: NASA Space Explorer container ready!
+# Collect NASA Image Library metadata
+python -m src.apis.collect_planets
+
+# Normalize, inspect, and export the collected metadata
+python -m src.processing.process_nasa_data
+python -m src.processing.data_quality_report
+python -m src.processing.export_clean_data
+
+# Run project tests
+python -m pytest tests/ -v
 ```
 
-This only checks that the base image runs. Docker Compose services (PostgreSQL, Airflow, Streamlit) are not wired up yet.
-
----
-
-## Usage
-
-Run the API clients from the repository root:
-
-```bash
-python -m src.apis.apod_client
-python -m src.apis.image_library_client
-```
-
-Fetch, normalize and validate Image Library results:
-
-```python
-from src.apis.image_library_client import fetch_nasa_library_pages
-from src.processing.normalize import normalize_nasa_library, filter_records_by_year
-from src.processing.validate import validate_record, find_duplicate_records
-
-raw = fetch_nasa_library_pages(query="Mars", max_pages=2, start_year=2020, end_year=2026)
-
-records = normalize_nasa_library(raw)
-records = filter_records_by_year(records, 2020, 2026)
-valid = [r for r in records if validate_record(r)["is_valid"]]
-duplicates = find_duplicate_records(valid)
-
-print(f"Normalized: {len(records)} | Valid: {len(valid)} | Duplicates: {len(duplicates)}")
-```
-
-This example does not load data into PostgreSQL or drop duplicates.
-
-### Main functions
-
-| Module | Function | Purpose |
-| --- | --- | --- |
-| `src/apis/apod_client.py` | `fetch_apod()` | Fetch recent APOD records |
-| `src/apis/image_library_client.py` | `create_retry_session()` | Session that retries GET on 429/500/502/503/504, up to 3 times |
-| | `fetch_nasa_library(query, page, start_year, end_year)` | Fetch one year-filtered search page |
-| | `fetch_nasa_library_pages(query, max_pages, start_year, end_year)` | Combine several search pages |
-| `src/processing/normalize.py` | `clean_html(text)` | Strip HTML, decode entities, normalize whitespace |
-| | `normalize_apod(record)` | Map an APOD record to the common schema |
-| | `normalize_nasa_library(raw_data)` | Flatten Library items into the common schema |
-| | `filter_records_by_year(records, start_year, end_year)` | Keep records within a year range |
-| `src/processing/validate.py` | `validate_date(date_string)` | Check a `YYYY-MM-DD` date |
-| | `validate_record(record)` | Check required fields and date |
-| | `find_duplicate_records(records)` | Find repeated `(source_api, source_id)` in one batch |
-
----
+**Before recollecting:** Check the collector's current page limit, resume behavior, and configuration. The commands show the local processing entry points and do not by themselves deploy the complete Airflow/PostgreSQL/Streamlit stack.
 
 ## Repository structure
 
 ```text
 400_Data-engineering_project/
 ├── src/
-│   ├── apis/              # APOD and Image Library clients
-│   ├── processing/        # normalize.py, validate.py
-│   ├── database/          # PostgreSQL schema and loading (in progress)
-│   └── pipeline/          # Pipeline entry points (in progress)
-├── dags/                  # Airflow DAGs
-├── sql/                   # Schema and analytical queries
-├── notebooks/             # Team EDA
-├── pages/                 # Streamlit pages
-├── dashboard/             # Dashboard app
-├── tests/                 # Pytest suite
-├── docs/                  # Project documentation
-├── deck/                  # Presentation materials
-├── data/                  # Local data only, not committed
-├── Dockerfile
-├── environment.yml
-├── requirements.txt
-└── .env.example
+│   ├── apis/           # NASA API clients and collection utilities
+│   ├── processing/     # Normalization, validation, quality reports, exports
+│   ├── database/       # Database-related Python modules
+│   └── pipeline/       # Pipeline integration modules
+├── dags/               # Apache Airflow workflows
+├── sql/                # Database schema and SQL queries
+├── notebooks/          # Exploratory data analysis
+├── dashboard/          # Streamlit application
+├── pages/              # Additional Streamlit pages, where used
+├── tests/              # Automated tests
+├── docs/               # Project documentation
+├── deck/               # Presentation materials
+├── data/               # Locally generated raw and processed data
+├── Dockerfile          # Container image configuration
+├── environment.yml     # Conda environment
+├── requirements.txt    # Python dependencies
+├── .env.example        # Example environment-variable configuration
+└── .gitignore          # Git exclusions
 ```
 
-> **Never commit** `.env`, credentials, generated datasets or cache files.
+Folder names indicate the intended module boundaries; the source code and configuration define the actual entry points and integrations.
 
----
+## Data quality and considerations
 
-## Data model
+The processing workflow standardizes NASA metadata into consistent fields, including source identifiers, dates, media links, titles, descriptions, and optional attributes. Clean exports support unique image records and their relationships to multiple search topics.
 
-APOD and Image Library records share one schema:
+Key considerations for downstream analysis include:
 
-| Field | Description |
-| --- | --- |
-| `source_api` | Which API the record came from |
-| `source_id` | ID within the source; with `source_api`, the unique key |
-| `date` | `YYYY-MM-DD` (see note below) |
-| `title`, `explanation` | Cleaned text |
-| `media_type` | Image, video, etc. |
-| `image_url`, `page_url`, `asset_manifest_url` | Links to the media and its page |
-| `credit`, `alt_text` | Attribution and accessibility text |
-| `center`, `location`, `keywords` | Library metadata, often missing |
+- **Date plausibility:** A syntactically valid date may still be a future date. Investigate anomalous dates using the raw API metadata before correcting or excluding records.
+- **Source semantics:** APOD feature dates and Image Library creation dates represent different events.
+- **Duplicate records:** The same NASA image may appear in more than one keyword search; preserve image–topic relationships without double-counting unique images.
+- **Missing metadata:** Optional fields may be absent; downstream queries should account for null values.
+- **Coverage and reproducibility:** Re-run normalization, quality reporting, and clean export after changing the collection scope, and document the resulting data snapshot.
 
-**Things to know before analyzing:**
-
-- **Same field name, different meaning.** APOD `date` is the day it was featured; Library `date` is `date_created`.
-- **Keyword ≠ subject.** A keyword search returns anything tagged or described with that word. For example, 1960s "Saturn" results are mostly Saturn rockets.
-- **Library page URLs are built from the NASA ID** and have not been fully link-checked.
-
----
-
-## Data quality and testing
-
-### Validation rules
-
-- **Required fields:** `source_api`, `source_id`, `title`
-- **Date:** parseable `YYYY-MM-DD`
-- **Duplicates:** repeated `(source_api, source_id)` within a batch. Across runs, a PostgreSQL unique constraint on the same pair is planned.
-
-### Run the tests
-
-```bash
-python -m pytest tests/ -v
-```
-
-### Initial results
-
-| Check | Result |
-| --- | --- |
-| Library retrieval | 100 items per page; 2 pages → 200 normalized records |
-| Year filter, 2020–2026 | 200 / 200 in range |
-| Required-field and date checks | 200 / 200 passed |
-| Within-batch duplicates | 0 |
-| Pytest (retry configuration) | 1 passed |
-| Docker base image | Starts successfully |
-
-These are component-level checks, not end-to-end tests. Retry recovery, cross-run deduplication, historical APOD retrieval, database loading and Airflow runs still need testing.
-
----
+The latest cleaned exports should be checked against the PostgreSQL loader and dashboard before publishing final statistics. A successful component test does not on its own establish a fully tested end-to-end pipeline.
 
 ## Project status
 
-- [x] GitHub repo and feature-branch workflow
-- [x] Conda environment
-- [x] Docker base image (smoke test)
-- [x] APOD client: recent records
-- [x] Image Library client: pagination and year filter
-- [x] Normalization and basic validation
-- [x] Within-batch duplicate detection
-- [x] HTTP retry configuration
-- [ ] Historical APOD ingestion, 2020–2026
-- [ ] PostgreSQL schema, loading and queries
-- [ ] Airflow DAG
-- [ ] Docker Compose services
-- [ ] Team EDA notebooks
-- [ ] Streamlit dashboard
-- [ ] Expanded tests and end-to-end run
-
-**Historical APOD note:** the `apod-basic` endpoint only honors the `page` parameter (25 posts per page, newest first). Parameters such as `date` and `per_page` are ignored, so 2020–2026 history has to be collected by paging back from the newest posts, about 100 pages.
-
-**Next up:** agree on a data contract for PostgreSQL, expose fetch / normalize / validate to the Airflow DAG, align EDA metrics with the dashboard, and merge the API pull request into `develop`.
-
----
-
-## Team
-
-| Member | Responsibilities |
+| Component | Status |
 | --- | --- |
-| Irene | API ingestion, normalization, validation, GitHub coordination, EDA |
-| Lize | PostgreSQL schema, data loading, SQL queries, database quality, EDA |
-| Andy | Airflow DAG, Docker Compose, workflow automation, pipeline logging, EDA |
-| Chloe | Streamlit app, interactive charts and filters, bringing EDA findings into the dashboard |
+| NASA API integration and data collection | Implemented; extended Earth/Mars collection reported complete |
+| Data normalization, validation, and clean export | Implemented; rerun/verify metrics against expanded data snapshot |
+| PostgreSQL database and SQL | Developed as a project workstream; verify current dataset integration |
+| Airflow and Docker | Developed as a project workstream; verify the integrated scheduled run |
+| EDA and Streamlit dashboard | Developed; dashboard URL shared above |
+| Final end-to-end verification | Confirm latest data, database, automation, and deployment are consistent |
 
-Everyone shares testing, documentation, code review, design decisions and the final presentation.
+## Team responsibilities
 
----
-
-## Contributing
-
-| Branch | Purpose |
+| Team member | Primary responsibilities |
 | --- | --- |
-| `main` | Stable version |
-| `develop` | Integration branch |
-| `feature/*` | One workstream each, branched from `develop` |
+| Irene | API ingestion, data normalization and cleaning, data quality, GitHub coordination |
+| Lize | PostgreSQL database design, data loading, SQL queries, database quality checks |
+| Andy | Apache Airflow, Docker/Docker Compose, pipeline integration |
+| Chloe | Exploratory data analysis (EDA), analytical visualizations, Streamlit dashboard |
 
-1. Branch from `develop`: `git checkout -b feature/<name> develop`
-2. Commit, push, and open a pull request into `develop`
-3. Merge after review
+The team collaborates on integration, reviews, testing, documentation, and the final presentation.
 
----
+## Contributing and repository practices
+
+Use `feature/*` branches for development, `develop` for integration, and `main` for stable releases. Submit changes through pull requests and follow the repository's current review and branch-protection rules.
+
+**Do not commit** `.env`, passwords, API tokens, database credentials, bulk generated datasets, or Python cache files. Use `.env.example` for safe configuration templates. Share large data exports through an agreed data location or reproducible collection process.
 
 ## Data sources and attribution
 
-- [NASA Astronomy Picture of the Day (APOD)](https://apod.nasa.gov/apod/)
-- [NASA Image and Video Library](https://images.nasa.gov/) · [API docs](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf)
-- [Apache Airflow](https://airflow.apache.org/) · [Docker](https://docs.docker.com/) · [Streamlit](https://docs.streamlit.io/) · [Plotly](https://plotly.com/python/)
+- [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/)
+- [NASA Image & Video Library](https://images.nasa.gov/) · [API documentation](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf)
+- [Apache Airflow](https://airflow.apache.org/) · [Docker](https://docs.docker.com/) · [Streamlit](https://docs.streamlit.io/)
 
-**Image rights:** Many APOD images belong to third-party photographers, not NASA. Always show the `credit` field with an image, and don't assume an image is public domain.
+NASA and third-party media may carry different credit and reuse conditions. Preserve the original attribution metadata and check applicable image rights before redistribution.
 
-Results describe the data this project collected through specific queries, not NASA's entire archive.
