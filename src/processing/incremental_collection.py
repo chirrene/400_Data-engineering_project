@@ -269,19 +269,54 @@ class Collector:
         return summary
 
 
-def additions(run_dir):
+def coverage_state(run_dir, approve_partial_coverage=False):
+    """Bind explicit partial approval to a reviewed, checksummed reconciliation."""
     summary = read_json(run_dir / "collection_summary.json")
-    if summary.get("status") != "complete" or set(summary.get("topics", {})) != set(TOPICS):
-        raise ValueError("Collection coverage incomplete; inspect summary and resume collect before preparing")
-    if any(t.get("status") != "complete" for t in summary["topics"].values()):
-        raise ValueError("Incomplete topic coverage")
-    path = run_dir / "collected_records.jsonl"
-    if digest(path) != summary["records_sha256"]:
+    if set(summary.get("topics", {})) != set(TOPICS):
+        raise ValueError("Missing topic coverage reports")
+    if digest(run_dir / "collected_records.jsonl") != summary["records_sha256"]:
         raise ValueError("Collected-record checksum mismatch")
-    with path.open(encoding="utf-8") as stream:
+    complete = summary.get("status") == "complete" and all(
+        t.get("status") == "complete" for t in summary["topics"].values())
+    if complete:
+        return {"collection_status": "complete", "partial_coverage_approved": False,
+                "records_path": str(run_dir / "collected_records.jsonl")}
+    if not approve_partial_coverage:
+        raise ValueError("Collection coverage incomplete; inspect reconciliation_summary.json and "
+                         "explicitly pass --approve-partial-coverage to use partial recovery records")
+    report_path = run_dir / "reconciliation_summary.json"
+    report = read_json(report_path)
+    if report.get("status") != "incomplete" or report.get("requires_partial_approval") is not True:
+        raise ValueError("Missing explicit incomplete-coverage reconciliation report")
+    if not report.get("limitations"):
+        raise ValueError("Partial coverage limitations must be documented")
+    if report["collection_summary_sha256"] != digest(run_dir / "collection_summary.json") or (
+        report["collected_records_sha256"] != summary["records_sha256"]
+    ):
+        raise ValueError("Reconciliation is stale; run reconciliation build again")
+    actual_evidence = {str(path.relative_to(run_dir)): digest(path) for path in
+                       (run_dir / "reconciliation" / "pages").glob("*.json")}
+    if actual_evidence != report["evidence_sha256"]:
+        raise ValueError("Recovery evidence changed; run reconciliation build again")
+    path = run_dir / "reconciliation" / "reconciled_records.jsonl"
+    if digest(path) != report["records_sha256"]:
+        raise ValueError("Reconciled-record checksum mismatch")
+    return {"collection_status": "incomplete", "partial_coverage_approved": True,
+            "reconciliation_summary_sha256": digest(report_path),
+            "reconciliation_original_sha256": report["original_sha256"],
+            "coverage_limitations": report["limitations"], "records_path": str(path)}
+
+
+def additions(run_dir, approve_partial_coverage=False):
+    state = coverage_state(run_dir, approve_partial_coverage)
+    with Path(state["records_path"]).open(encoding="utf-8") as stream:
+        seen = set()
         for line in stream:
             row = json.loads(line)
-            key(row, topic=True)
+            row_key = key(row, topic=True)
+            if row_key in seen:
+                raise ValueError("Duplicate collected topic relationship")
+            seen.add(row_key)
             if row["search_topic"] not in TOPICS or row["source_api"] != "nasa_library":
                 raise ValueError("Unexpected topic/source in additions")
             if not validate_record(row)["is_valid"]:
@@ -307,10 +342,13 @@ def validate_preservation(original, candidate):
             "preservation": "all original rows preserved exactly", "validation": "passed"}
 
 
-def prepare(folder, run_dir):
+def prepare(folder, run_dir, approve_partial_coverage=False):
     baseline = fingerprints(folder)
+    coverage = coverage_state(run_dir, approve_partial_coverage)
+    if coverage.get("reconciliation_original_sha256", baseline) != baseline:
+        raise ValueError("Original data changed since reconciliation; build again")
     images, topics = read_pair(folder)
-    for row in additions(run_dir):
+    for row in additions(run_dir, approve_partial_coverage):
         image_key = key(row)
         images.setdefault(image_key, {k: v for k, v in row.items() if k != "search_topic"})
         topics.setdefault(key(row, topic=True), dict(zip(
@@ -322,6 +360,7 @@ def prepare(folder, run_dir):
     report = validate_preservation(folder, candidate)
     if fingerprints(folder) != baseline:
         raise ValueError("Original data changed during preparation; run prepare again")
+    report.update(coverage)
     report.update({"candidate": str(candidate.resolve()), "baseline_sha256": baseline,
                    "candidate_sha256": fingerprints(candidate),
                    "collection_summary_sha256": digest(run_dir / "collection_summary.json")})
@@ -329,10 +368,13 @@ def prepare(folder, run_dir):
     return report
 
 
-def verify(folder, run_dir):
+def verify(folder, run_dir, approve_partial_coverage=False):
     report = read_json(run_dir / "validation_summary.json")
     # Recheck completeness and the additions checksum without contacting NASA.
-    list(additions(run_dir))
+    state = coverage_state(run_dir, approve_partial_coverage)
+    if any(report.get(field) != value for field, value in state.items()):
+        raise ValueError("Coverage approval/report changed since prepare; run prepare again")
+    list(additions(run_dir, approve_partial_coverage))
     if digest(run_dir / "collection_summary.json") != report["collection_summary_sha256"]:
         raise ValueError("Collection changed since prepare; run prepare again")
     candidate = Path(report["candidate"])
@@ -360,10 +402,10 @@ def recover(folder):
     LOG.warning("Recovered original pair from %s", backup)
 
 
-def merge(folder, run_dir):
+def merge(folder, run_dir, approve_partial_coverage=False):
     with locked(folder):
         recover(folder)
-        report = verify(folder, run_dir)
+        report = verify(folder, run_dir, approve_partial_coverage)
         candidate = Path(report["candidate"])
         backup = folder / "incremental_backups" / uuid.uuid4().hex
         backup.mkdir(parents=True)
@@ -372,7 +414,7 @@ def merge(folder, run_dir):
         if fingerprints(backup) != report["baseline_sha256"]:
             raise ValueError("Backup verification failed; originals untouched")
         # Validate again after backup, immediately before publishing.
-        verify(folder, run_dir)
+        verify(folder, run_dir, approve_partial_coverage)
         save_json(backup / "manifest.json", report)
         journal = folder / ".incremental_merge.json"
         save_json(journal, {"backup": str(backup.resolve()),
@@ -395,6 +437,8 @@ def main():
     parser.add_argument("action", choices=("collect", "prepare", "verify", "merge", "recover"))
     parser.add_argument("--data-dir", type=Path, default=Path("data/processed/nasa_library"))
     parser.add_argument("--run-dir", type=Path, default=Path("data/incremental/nasa_library"))
+    parser.add_argument("--approve-partial-coverage", action="store_true",
+                        help="Explicitly accept documented incomplete coverage for prepare/verify/merge")
     parser.add_argument("--delay", type=float, default=0.5)
     parser.add_argument("--attempts", type=int, default=3)
     args = parser.parse_args()
@@ -410,11 +454,11 @@ def main():
             if args.action == "collect":
                 report = Collector(args.run_dir, delay=args.delay, attempts=args.attempts).collect()
             elif args.action == "prepare":
-                report = prepare(args.data_dir, args.run_dir)
+                report = prepare(args.data_dir, args.run_dir, args.approve_partial_coverage)
             elif args.action == "verify":
-                report = verify(args.data_dir, args.run_dir)
+                report = verify(args.data_dir, args.run_dir, args.approve_partial_coverage)
             elif args.action == "merge":
-                report = merge(args.data_dir, args.run_dir)
+                report = merge(args.data_dir, args.run_dir, args.approve_partial_coverage)
             else:
                 with locked(args.data_dir):
                     recover(args.data_dir)
