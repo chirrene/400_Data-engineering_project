@@ -24,7 +24,8 @@ pause before each request (`--delay 0.5`). Logs go to the terminal.
 After collection finishes, inspect `data/incremental/nasa_library/collection_summary.json`.
 A complete status requires both Mars and Earth to pass all coverage checks. Exit code
 2 means incomplete coverage; exit code 1 means an operation failed; 0 means success.
-Incomplete runs cannot prepare or merge. Successful page checkpoints remain available
+Incomplete runs cannot prepare or merge by default. A documented reconciliation can
+use an explicitly approved partial-coverage option; see [reconciliation](incremental_reconciliation.md). Successful page checkpoints remain available
 when a request fails. Ctrl-C also preserves all previously saved pages; rerun collect
 to regenerate the summary. An intermediate summary may lack a final overall status.
 
