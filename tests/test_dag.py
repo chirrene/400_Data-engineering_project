@@ -1,11 +1,17 @@
 """DAG structure and end-to-end tests. Run: pytest tests/test_dag.py
 
-Uses offline fixtures and a temporary SQLite database, so no network,
-Docker or Postgres is needed.
+Structure tests need only Airflow. End-to-end tests replay offline fixtures
+(no network) into a real PostgreSQL database given by TEST_DATABASE_URL, e.g.
+
+    TEST_DATABASE_URL=postgresql+psycopg2://nasa:nasa@localhost:5432/nasa_test
+
+They drop and recreate the pipeline tables there, so never point it at a
+database you care about. Without TEST_DATABASE_URL they are skipped.
 """
 from __future__ import annotations
 
 import json
+import os
 
 import pytest
 from sqlalchemy import text
@@ -15,13 +21,26 @@ from airflow.models import DagBag  # noqa: E402
 from airflow.utils.state import DagRunState  # noqa: E402
 
 
+TEST_DATABASE_URL = os.getenv("TEST_DATABASE_URL")
+needs_postgres = pytest.mark.skipif(
+    not TEST_DATABASE_URL, reason="set TEST_DATABASE_URL to a throwaway PostgreSQL database"
+)
+
+
 @pytest.fixture()
 def offline_env(tmp_path, monkeypatch):
+    from sqlalchemy import create_engine
+
     monkeypatch.setenv("NASA_OFFLINE", "1")
     monkeypatch.setenv("DATA_DIR", str(tmp_path / "data"))
-    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
+    monkeypatch.setenv("DATABASE_URL", TEST_DATABASE_URL)
     monkeypatch.setenv("APOD_START_DATE", "2020-01-01")
-    return tmp_path
+    monkeypatch.setenv("LIBRARY_KEYWORDS", "mars,jupiter,galaxy")
+    with create_engine(TEST_DATABASE_URL).begin() as conn:
+        conn.execute(
+            text("DROP TABLE IF EXISTS nasa_search_matches, nasa_records, pipeline_runs")
+        )
+    return TEST_DATABASE_URL
 
 
 @pytest.fixture(scope="module")
@@ -52,18 +71,28 @@ def test_finish_run_always_runs(dag):
     assert dag.get_task("finish_run").trigger_rule == "all_done"
 
 
-def _db_rows(tmp_path, sql):
+def _db_rows(url, sql):
     from sqlalchemy import create_engine
 
-    with create_engine(f"sqlite:///{tmp_path / 'test.db'}").connect() as conn:
+    with create_engine(url).connect() as conn:
         return conn.execute(text(sql)).fetchall()
 
 
-def _count(tmp_path, source_api):
+def _count(url, source_api):
     sql = f"SELECT COUNT(*) FROM nasa_records WHERE source_api = '{source_api}'"
-    return _db_rows(tmp_path, sql)[0][0]
+    return _db_rows(url, sql)[0][0]
 
 
+def test_missing_database_url_fails_clearly(monkeypatch):
+    from src.pipeline import tasks
+    from src.pipeline.config import MissingDatabaseURL
+
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    with pytest.raises(MissingDatabaseURL, match="DATABASE_URL is not set"):
+        tasks.start_run("manual__test")
+
+
+@needs_postgres
 def test_end_to_end_offline_and_idempotent(dag, offline_env):
     first = dag.test()
     assert first.state == DagRunState.SUCCESS
@@ -71,7 +100,8 @@ def test_end_to_end_offline_and_idempotent(dag, offline_env):
     lib_count = _count(offline_env, "nasa_library")
     assert apod_count > 0 and lib_count > 0
 
-    # A second run must not create duplicates.
+    # A second run must not create duplicates, and APOD only re-fetches from
+    # the newest stored date.
     second = dag.test()
     assert second.state == DagRunState.SUCCESS
     assert _count(offline_env, "apod") == apod_count
@@ -83,13 +113,23 @@ def test_end_to_end_offline_and_idempotent(dag, offline_env):
         "FROM pipeline_runs ORDER BY started_at",
     )
     assert len(runs) == 2
-    status, apod_loaded, library_loaded, duration, metrics = runs[-1]
-    assert status == "success"
-    assert apod_loaded == apod_count and library_loaded == lib_count
-    assert duration is not None and duration >= 0
-    assert "extract_apod" in json.loads(metrics)
+    assert [r[0] for r in runs] == ["success", "success"]
+    # First run backfills every APOD post; the second only the newest day.
+    assert runs[0][1] == apod_count
+    assert runs[1][1] == 1
+    assert all(r[2] == lib_count for r in runs)
+    assert all(r[3] is not None and r[3] >= 0 for r in runs)
+    assert json.loads(runs[0][4])["extract_apod"]["start_date"] == "2020-01-01"
+    assert json.loads(runs[1][4])["extract_apod"]["start_date"] > "2020-01-01"
+    # Topic links land in Lize's relationship table.
+    topics = {
+        row[0]
+        for row in _db_rows(offline_env, "SELECT DISTINCT search_keyword FROM nasa_search_matches")
+    }
+    assert topics == {"mars", "jupiter", "galaxy"}
 
 
+@needs_postgres
 def test_failed_step_is_recorded(dag, offline_env, monkeypatch):
     from src.pipeline import placeholders
 

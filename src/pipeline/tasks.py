@@ -1,7 +1,7 @@
 """Plain-Python bodies of the DAG tasks.
 
 Kept free of Airflow imports so they can be unit-tested and run by hand
-(``python -m src.pipeline.run_local``). Large data moves between tasks as
+by hand. Large data moves between tasks as
 JSON files under DATA_DIR/raw/<run_id>/; only small dicts go through XCom.
 """
 from __future__ import annotations
@@ -37,6 +37,9 @@ def _read(path: str | Path) -> list[dict]:
 
 
 def start_run(run_id: str) -> dict:
+    # Fail on the first task with a clear message instead of a KeyError deep
+    # inside src/database when DATABASE_URL is missing.
+    get_settings().require_database_url()
     run_log.start_run(run_id)
     return {"run_id": run_id}
 
@@ -48,13 +51,33 @@ def create_tables() -> dict:
     return {"source": source}
 
 
+def _latest_apod_date() -> str | None:
+    from sqlalchemy import text
+
+    from src.pipeline.db import get_engine
+
+    with get_engine().connect() as conn:
+        latest = conn.execute(
+            text("SELECT MAX(date) FROM nasa_records WHERE source_api = 'apod'")
+        ).scalar()
+    return str(latest)[:10] if latest else None
+
+
 def extract_apod(run_id: str) -> dict:
+    """Fetch APOD posts we don't have yet.
+
+    The first run backfills from APOD_START_DATE; later runs start from the
+    newest APOD date already stored (re-fetching that day in case it changed),
+    so a daily run makes one or two requests instead of ~100.
+    """
     settings = get_settings()
+    latest = _latest_apod_date()
+    start_date = max(settings.apod_start_date, latest) if latest else settings.apod_start_date
     func, source = resolve("fetch_apod")
-    records = func(settings.apod_start_date)
+    records = func(start_date)
     path = _run_dir(run_id) / "apod.json"
     _write(path, records)
-    return {"path": str(path), "fetched": len(records), "source": source}
+    return {"path": str(path), "fetched": len(records), "start_date": start_date, "source": source}
 
 
 def extract_library(run_id: str) -> dict:
