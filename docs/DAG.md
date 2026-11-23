@@ -69,33 +69,66 @@ Rules that keep the DAG reliable:
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `DATABASE_URL` | unset | Overrides `DATABASE_PATH`, e.g. Postgres in Docker: `postgresql+psycopg2://nasa:nasa@postgres:5432/nasa` |
-| `DATABASE_PATH` | `data/nasa.db` | SQLite file used when `DATABASE_URL` is unset |
-| `APOD_START_DATE` | `2020-01-01` | Earliest APOD date to fetch |
-| `LIBRARY_KEYWORDS` | `mars,jupiter,galaxy,nebula` | Comma-separated search terms |
-| `LIBRARY_YEAR_START` / `_END` | `2020` / `2026` | Image Library year filter |
-| `LIBRARY_MAX_PAGES` | `2` | Pages of 100 per keyword |
+| `DATABASE_URL` | set by Compose | PostgreSQL URL. Required outside Docker, e.g. `postgresql+psycopg2://nasa:nasa@localhost:5433/nasa` |
+| `APOD_START_DATE` | `2020-01-01` | First run backfills APOD from here; later runs fetch only new days |
+| `LIBRARY_KEYWORDS` | the 9 team topics | Comma-separated search topics |
+| `LIBRARY_YEAR_START` / `_END` | blank | Image Library year filter; blank = all years |
+| `LIBRARY_MAX_PAGES` | `2` | Pages of 100 per topic per run |
 | `NASA_OFFLINE` | `0` | `1` replays `tests/fixtures/` instead of calling NASA |
 | `DATA_DIR` | `data/` | Where raw JSON per run is written |
 
-## Running
+## Running with Docker Compose (recommended)
 
-Tests (offline, temporary SQLite, no Docker needed):
+Needs only [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ```bash
-pip install -r requirements-airflow.txt
-pytest tests/
+cp .env.example .env          # optional, defaults work as-is
+docker compose up --build
 ```
 
-Run the whole DAG once without the scheduler or UI:
+| Service | URL | Notes |
+|---|---|---|
+| Airflow | http://localhost:8080 | Log in with `admin` / `admin` (change in `.env`). Unpause `nasa_pipeline`, then click Trigger |
+| Dashboard | http://localhost:8501 | Reads the local database, so it fills up as the DAG runs |
+| PostgreSQL | `localhost:5433` | `nasa` / `nasa`, database `nasa`; tables come from `sql/schema.sql` |
+
+* The first run backfills APOD from 2020 (about 100 API pages, a few minutes).
+  Daily runs after that fetch only new days.
+* Each run pulls `LIBRARY_MAX_PAGES` pages per topic. The full collection
+  (up to 100 pages per topic) is the one-off backfill in `src/apis/collect_planets.py`.
+* Compose never uses the `DATABASE_URL` from `.env`, so it can't write to the
+  team's cloud database by accident.
+* Stop with `Ctrl+C`; `docker compose down -v` also deletes the local database.
+
+Check what each run did:
 
 ```bash
+docker compose exec postgres psql -U nasa -d nasa -c "SELECT run_id, status, apod_loaded, library_loaded, quality_failures, round(duration_seconds) FROM pipeline_runs ORDER BY started_at DESC;"
+```
+
+## Running without Docker
+
+Python 3.11 and a PostgreSQL database are needed.
+
+```bash
+pip install -r requirements-airflow.txt \
+  --constraint https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.11.txt
+export DATABASE_URL=postgresql+psycopg2://nasa:nasa@localhost:5432/nasa
 export AIRFLOW_HOME=$PWD/.airflow AIRFLOW__CORE__DAGS_FOLDER=$PWD/dags AIRFLOW__CORE__LOAD_EXAMPLES=False
 airflow db migrate
-airflow dags test nasa_pipeline
+airflow dags test nasa_pipeline      # one full run, no scheduler or UI
 ```
 
-With the UI: `airflow standalone`, open http://localhost:8080, turn on
-`nasa_pipeline` and click Trigger. In Docker, Irene's `docker-compose.yml`
-should mount `dags/` and `src/` and set `PYTHONPATH=/opt/airflow` plus the
-variables above.
+## Tests
+
+```bash
+pytest tests/test_dag.py tests/test_pipeline_tasks.py
+```
+
+Structure and adapter tests need no database. The two end-to-end tests replay
+offline fixtures into PostgreSQL and run only when `TEST_DATABASE_URL` points
+at a **throwaway** database (they drop and recreate the tables):
+
+```bash
+TEST_DATABASE_URL=postgresql+psycopg2://nasa:nasa@localhost:5433/nasa_test pytest tests/test_dag.py
+```
