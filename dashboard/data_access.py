@@ -268,9 +268,9 @@ def year_bounds(year, today):
 
 PLANET_MIN_SCORE = 4
 
-# Solar-system order reads more naturally than order by size.
-PLANET_TOPIC_ORDER = ["mercury", "venus", "earth", "mars", "jupiter", "saturn",
-                      "uranus", "neptune", "galaxy"]
+# Display order for the Planet Gallery topic picker: the most striking covers first.
+PLANET_TOPIC_ORDER = ["galaxy", "jupiter", "mars", "venus", "mercury", "earth",
+                      "saturn", "uranus", "neptune"]
 
 
 def word_pattern(words):

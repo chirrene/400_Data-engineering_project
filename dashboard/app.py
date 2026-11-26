@@ -39,10 +39,10 @@ except (data_access.DatabaseConfigError, SQLAlchemyError) as error:
 # Build the pages first so the Home page can link to the others.
 gallery_page = st.Page(gallery.render, title="Planet Gallery", icon=":material/public:",
                        url_path="planets")
-archive_page = st.Page(explore.render, title="Archive Search", icon=":material/travel_explore:",
+archive_page = st.Page(lambda: explore.render(gallery_page), title="Archive Search", icon=":material/travel_explore:",
                        url_path="archive")
-insights_page = st.Page(insights.render, title="Data Insights", icon=":material/insights:",
-                        url_path="insights")
+insights_page = st.Page(lambda: insights.render(archive_page, gallery_page), title="Data Insights",
+                        icon=":material/insights:", url_path="insights")
 home_page = st.Page(
     lambda: home.render(gallery_page, archive_page, insights_page),
     title="Home", icon=":material/rocket_launch:", url_path="home", default=True,

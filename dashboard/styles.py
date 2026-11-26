@@ -28,6 +28,18 @@ STAR_LAYERS = """
     radial-gradient(1px 1px at 88% 76%, rgba(255,255,255,0.65), transparent 60%)
 """
 
+# A second, sparser star field that twinkles on the Home hero.
+TWINKLE_LAYERS = """
+    radial-gradient(1.4px 1.4px at 12% 40%, rgba(255,255,255,0.9), transparent 60%),
+    radial-gradient(1px 1px at 24% 12%, rgba(200,228,250,0.9), transparent 60%),
+    radial-gradient(1.6px 1.6px at 37% 64%, rgba(216,186,131,0.9), transparent 60%),
+    radial-gradient(1px 1px at 47% 30%, rgba(255,255,255,0.8), transparent 60%),
+    radial-gradient(1.3px 1.3px at 58% 78%, rgba(255,255,255,0.85), transparent 60%),
+    radial-gradient(1px 1px at 69% 18%, rgba(200,228,250,0.8), transparent 60%),
+    radial-gradient(1.5px 1.5px at 81% 52%, rgba(255,255,255,0.9), transparent 60%),
+    radial-gradient(1px 1px at 93% 26%, rgba(216,186,131,0.8), transparent 60%)
+"""
+
 APP_CSS = f"""
 <style>
 /* Pearl background with a faint ice-blue glow at the top. */
@@ -73,7 +85,19 @@ a[data-testid="stSidebarNavLink"][aria-current="page"] [data-testid="stIconMater
 }}
 .hero::before {{ content: ""; position: absolute; inset: 0; pointer-events: none;
                  background-image: {STAR_LAYERS}; }}
-.hero > * {{ position: relative; }}
+.hero > * {{ position: relative; z-index: 1; }}
+/* Home hero only: a second, slowly drifting and twinkling star layer (pure CSS, no JS). */
+.hero.animated::after {{
+    content: ""; position: absolute; inset: -20% 0 0 0; pointer-events: none; z-index: 0;
+    background-image: {TWINKLE_LAYERS};
+    animation: star-twinkle 5s ease-in-out infinite alternate, star-drift 90s linear infinite;
+    will-change: opacity, transform;
+}}
+@keyframes star-twinkle {{ from {{ opacity: 0.25; }} to {{ opacity: 0.95; }} }}
+@keyframes star-drift {{ from {{ transform: translateY(0); }} to {{ transform: translateY(16%); }} }}
+@media (prefers-reduced-motion: reduce) {{
+    .hero.animated::after {{ animation: none; opacity: 0.6; }}
+}}
 .hero.compact {{ padding: 2.2rem 2.5rem; }}
 .hero [data-testid="stHeaderActionElements"] {{ display: none; }}
 .hero h1 {{ color: #FFFFFF; font-size: 2.8rem; margin: 0 0 0.5rem 0; padding: 0; }}
@@ -129,6 +153,10 @@ a[data-testid="stSidebarNavLink"][aria-current="page"] [data-testid="stIconMater
     box-shadow: 0 4px 16px rgba(23,50,77,0.05);
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }}
+[class*="st-key-panel_dest_"]:hover {{
+    border-color: rgba(93,175,222,0.7) !important; transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(23,50,77,0.10);
+}}
 [class*="st-key-card_"]:hover {{
     border-color: rgba(93,175,222,0.7) !important; transform: translateY(-2px);
     box-shadow: 0 12px 26px rgba(23,50,77,0.12);
@@ -137,13 +165,37 @@ a[data-testid="stSidebarNavLink"][aria-current="page"] [data-testid="stIconMater
 /* Small secondary note under the Planet Gallery date controls. */
 .date-note {{ color: {MUTED}; font-size: 0.82rem; line-height: 1.5; margin-top: 0.2rem; }}
 
-/* Key Findings box and the small example cards on the Insights page. */
-[class*="st-key-finding_"] {{ background: #EEF6FC; border-left: 3px solid {ACCENT} !important; }}
-[class*="st-key-finding_"] li {{ margin-bottom: 0.35rem; }}
-.insight-question {{ color: {MUTED}; font-size: 1.05rem; font-style: italic; margin: -0.3rem 0 0.8rem 0; }}
-.example-link {{ font-size: 0.82rem; }}
-.context-note {{ color: {MUTED}; font-size: 0.85rem; border-top: 1px solid #E6EEF5; padding-top: 0.6rem;
-                 margin-top: 0.4rem; }}
+/* Data Insights: small number, clear title, dominant chart, compact Key Finding. */
+.insight-number {{ color: #A98547; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em;
+                   text-transform: uppercase; margin-top: 0.2rem; }}
+h2.insight-title {{ color: {NAVY}; font-size: 1.65rem; font-weight: 700; line-height: 1.25;
+                    margin: 0.15rem 0 0.1rem 0; padding: 0; }}
+.insight-subtitle {{ color: {MUTED}; font-size: 0.98rem; margin-bottom: 0.4rem; }}
+[class*="st-key-finding_"] {{ background: #EEF6FC; border-left: 3px solid {GOLD} !important; }}
+[class*="st-key-finding_"] p {{ font-size: 1.04rem; line-height: 1.6; color: {NAVY}; margin: 0; }}
+.method-note {{ color: {MUTED}; font-size: 0.8rem; line-height: 1.45; margin: 0.35rem 0 0.2rem 0; }}
+.chart-step {{ color: {NAVY}; font-size: 0.95rem; font-weight: 600; margin: 0.7rem 0 -0.2rem 0; }}
+.center-focus-row {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                     gap: 0.5rem; margin: -0.3rem 0 0.7rem 0; }}
+.center-focus {{ border: 1px solid #DCE7F1; border-radius: 10px; padding: 0.5rem 0.75rem;
+                 background: #FFFFFF; }}
+.center-focus .name {{ display: block; color: {NAVY}; font-weight: 700; font-size: 0.92rem; }}
+.center-focus .what {{ display: block; color: {MUTED}; font-size: 0.88rem; line-height: 1.35; }}
+.archive-purpose {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                    gap: 0.6rem; margin: 0 0 0.9rem 0; }}
+.archive-purpose > div {{ border-radius: 10px; padding: 0.65rem 0.85rem; font-size: 0.93rem;
+                          line-height: 1.45; color: {NAVY}; border: 1px solid #DCE7F1; background: #FFFFFF; }}
+.archive-purpose > div.here {{ background: #EEF6FC; border-color: #BFD9EC; }}
+.archive-purpose b {{ display: block; font-size: 0.98rem; margin-bottom: 0.1rem; }}
+
+/* Archive Search: grouped filters and a prominent result count. */
+.filter-group-label {{ color: {MUTED}; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em;
+                       text-transform: uppercase; margin: 0.4rem 0 0.1rem 0; }}
+.result-count {{ display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.5rem;
+                 color: {NAVY}; font-size: 1.1rem; margin: 0.8rem 0 0.1rem 0; }}
+.result-count .num {{ font-size: 1.9rem; font-weight: 700; line-height: 1; }}
+.result-count .range {{ color: {ACCENT_STRONG}; font-weight: 600; }}
+.result-count .showing {{ color: {MUTED}; font-size: 0.88rem; margin-left: auto; }}
 
 /* Data-pipeline steps on the Home page. */
 .pipeline {{ display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; margin: 0.3rem 0 1rem 0; }}
@@ -169,7 +221,7 @@ def page_header(eyebrow, title, intro):
     st.markdown(f'<div class="page-intro">{intro}</div>', unsafe_allow_html=True)
 
 
-def hero_banner(title, text, image_url=None, tag=None, compact=False):
+def hero_banner(title, text, image_url=None, tag=None, compact=False, animated=False):
     """Dark space banner with an optional NASA image faded in on the right side."""
     gradient = ("linear-gradient(90deg, rgba(12,33,56,0.97) 0%, rgba(12,33,56,0.88) 42%, "
                 "rgba(12,33,56,0.38) 75%, rgba(12,33,56,0.12) 100%)")
@@ -178,7 +230,7 @@ def hero_banner(title, text, image_url=None, tag=None, compact=False):
     if image_url and image_url.startswith("https://") and not any(c in image_url for c in "'\"()<> "):
         background += f", url('{image_url}')"
     tag_html = f'<div class="hero-tag">{tag}</div>' if tag else ""
-    css_class = "hero compact" if compact else "hero"
+    css_class = "hero" + (" compact" if compact else "") + (" animated" if animated else "")
     st.markdown(
         f'<div class="{css_class}" style="background-image: {background};">'
         f"{tag_html}<h1>{title}</h1><p>{text}</p></div>",
