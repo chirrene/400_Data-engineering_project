@@ -9,6 +9,8 @@ notebooks/eda.ipynb. Every number here comes from live, read-only SQL in
 data_access.py that uses the same definitions (dashboard/analysis_rules.py).
 """
 
+import datetime as dt
+
 import plotly.graph_objects as go
 import streamlit as st
 
@@ -105,21 +107,39 @@ def pct(part, whole):
 # Insight 1: The 2014 surge
 # ---------------------------------------------------------------------------
 
-def annual_overview_chart(annual, peak_year):
-    """Compact bar chart of records per year that makes the peak year obvious."""
+def overview_ticks(first_year, last_year):
+    """Decade labels plus the latest year, so the axis visibly reaches the newest data."""
+    ticks = list(range((first_year + 9) // 10 * 10, last_year + 1, 10))
+    # Drop a decade label that would crowd the latest-year label on a phone screen.
+    ticks = [year for year in ticks if last_year - year >= 10 or year == last_year]
+    return ticks if last_year in ticks else ticks + [last_year]
+
+
+def annual_overview_chart(annual, peak_year, today=None):
+    """Compact bar chart of records per year that makes the peak year obvious.
+
+    The last bar is labelled "(to date)" in the hover text when it is the
+    current, still incomplete, calendar year.
+    """
     years = annual["year"].astype(int).tolist()
     counts = annual["unique_images"].astype(int).tolist()
     peak_images = counts[years.index(peak_year)]
+    today = today or dt.date.today()
+    hover_labels = [f"{year} (through {today:%b} {today.day})" if year == today.year else str(year)
+                    for year in years]
     figure = go.Figure(go.Bar(
-        x=years, y=counts,
+        x=years, y=counts, customdata=hover_labels,
         marker_color=[GOLD if year == peak_year else LIGHT_BLUE for year in years],
-        hovertemplate="%{x}: %{y:,} image records<extra></extra>",
+        hovertemplate="%{customdata}: %{y:,} image records<extra></extra>",
     ))
     figure.add_annotation(x=peak_year, y=peak_images, yshift=6, showarrow=False, yanchor="bottom",
                           text=f"<b>{peak_year}: {peak_images:,}</b>", font=dict(size=14, color=TEXT))
     base_layout(figure, 230)
     figure.update_layout(bargap=0.15, margin=dict(l=10, r=20, t=30, b=30))
-    figure.update_xaxes(showgrid=False, tickformat="d", dtick=10, tickfont=dict(size=13, color=MUTED))
+    figure.update_xaxes(showgrid=False, tickmode="array", tickvals=overview_ticks(years[0], years[-1]),
+                        tickformat="d", range=[years[0] - 1, years[-1] + 1],
+                        tickangle=0,
+                        tickfont=dict(size=13, color=MUTED))
     figure.update_yaxes(tickformat=",d", nticks=4, range=[0, peak_images * 1.18],
                         tickfont=dict(size=13, color=MUTED))
     return figure
@@ -198,7 +218,9 @@ def render_peak(archive_page=None):
     section_header(1, f"What drove the {peak_year} surge in NASA image records?",
                    f"{peak_year} has more image records than any other year in our dataset. "
                    "Kennedy Space Center's mission work explains much of the jump.")
-    step_label(f"① Image records per year: {peak_year} is the highest")
+    first_year, last_year = int(overview["year"].min()), int(overview["year"].max())
+    to_date = f", {last_year} to date" if last_year == dt.date.today().year else ""
+    step_label(f"① Image records per year ({first_year}–{last_year}{to_date}): {peak_year} is the highest")
     show_chart(annual_overview_chart(overview, peak_year), "chart_insight_1_overview")
     step_label(f"② Where the jump came from: Kennedy Space Center's Earth-topic records, {before} vs. {after}")
     show_chart(peak_chart(breakdown), "chart_insight_1")
@@ -211,7 +233,8 @@ def render_peak(archive_page=None):
         "mission testing and launches, and the archive shows it."
     ))
     method_note("A record is mission-linked when a mission name appears in its title or keywords; each "
-                "record counts once. Yearly counts exclude missing and future dates.")
+                "record counts once. Yearly counts exclude missing and future dates, so the latest "
+                "year counts records up to today.")
     if archive_page is not None:
         if st.button(f"See all {peak_year} records in Archive Search", icon=":material/arrow_forward:",
                      key="insight_to_archive", type="tertiary"):
@@ -317,33 +340,48 @@ def mission_chart(missions):
     return figure
 
 
+MOON_PROGRAM = ("Artemis program (incl. EM-1)", "Orion spacecraft (incl. EFT-1)", "Space Launch System (SLS)")
+ODYSSEY = "2001 Mars Odyssey"
+
+
+def mission_finding(missions):
+    """Key Finding for Insight 3; every count and rank comes from the live query."""
+    names = missions["mission"].tolist()
+    images = dict(zip(names, missions["images"].astype(int)))
+    artemis, orion, sls = MOON_PROGRAM
+    other_mars = [name for name in names[:8] if name != ODYSSEY
+                  and (name.startswith("Mars ") or name in ("Curiosity / Mars Science Laboratory",
+                                                             "Perseverance / Mars 2020"))]
+    story_holds = (names[:2] == [artemis, ODYSSEY] and orion in names[:5] and sls in names[:5]
+                   and len(other_mars) >= 2)
+    if not story_holds:
+        # The rankings changed after a data refresh: fall back to a plain description of the chart.
+        leader = names[0]
+        return (f"**{MISSION_LABELS.get(leader, leader)} ranks first**, appearing in "
+                f"{images[leader]:,} image records.")
+    count_word = {2: "two", 3: "three", 4: "four"}.get(len(other_mars), str(len(other_mars)))
+    return (
+        f"**Artemis ranks first with {images[artemis]:,} image records**, but what's interesting is that "
+        "two related parts of NASA's Moon program—Orion spacecraft and the Space Launch System—also rank "
+        f"in the top five. Meanwhile, **2001 Mars Odyssey comes in second with {images[ODYSSEY]:,} records**, "
+        f"and {count_word} other Mars missions also make the top eight. Together, these results show how "
+        "strongly both Moon missions and Mars exploration are represented in our image collection."
+    )
+
+
 def render_missions():
     missions = data_access.get_mission_mentions()
     if missions.empty:
         st.info("The data for this insight is not available right now.")
         return
 
-    by_mission = missions.set_index("mission")
-    leader = missions.iloc[0]
-    leader_name = MISSION_LABELS.get(leader["mission"], leader["mission"])
     section_header(3, "Which NASA missions appear most often in our records?",
                    "The eight mission and program names found in the most image records")
     show_chart(mission_chart(missions), "chart_insight_3")
 
-    text = f"**{leader_name} ranks first**, appearing in {int(leader['images']):,} image records. "
-    if "2001 Mars Odyssey" in by_mission.index:
-        odyssey = by_mission.loc["2001 Mars Odyssey"]
-        text += (f"**2001 Mars Odyssey** is the leading science mission ({int(odyssey['images']):,}). ")
-    others = [MISSION_LABELS.get(name, name) for name in missions.head(5)["mission"]
-              if name not in (leader["mission"], "2001 Mars Odyssey")]
-    if others:
-        listed = ", ".join(others[:-1]) + (", and " if len(others) > 2 else " and ") + others[-1] \
-            if len(others) > 1 else others[0]
-        text += f"{listed} also appear often. "
-    text += ("These counts show how often a mission name appears in titles and keywords. They don't "
-             "mean every image shows the spacecraft, and they don't measure NASA's priorities or budget.")
-    key_finding(3, text)
-    method_note("Each record counts once per mission. Known alternate names count toward the same mission; "
+    key_finding(3, mission_finding(missions))
+    method_note("Counts are mission names found in record titles and keywords. Each record counts once per "
+                "mission, and known alternate names count toward the same mission; "
                 "for example, EM-1 counts toward Artemis.")
 
 

@@ -572,7 +572,8 @@ def test_insights_page_has_one_chart_and_one_finding_per_insight():
     assert text.count("Key Finding.") == 3
     # One chart per insight, plus the small yearly overview that shows 2014 is the peak.
     assert len(app.get("plotly_chart")) == 4
-    for vague in ("actually document", "Mention Orion", "mentioning", "What was behind"):
+    for vague in ("actually document", "Mention Orion", "mentioning", "What was behind",
+                  "priorities or budget"):
         assert vague not in text
     assert len(app.dataframe) == 0
     assert "Interpretation & Limitation" not in text and "Four" not in text
@@ -584,7 +585,10 @@ def test_insights_page_has_one_chart_and_one_finding_per_insight():
     mission_growth = int(last["any_mission"] - first["any_mission"])
     assert f"added {mission_growth:,} of them" in text
     assert f"**about {mission_growth / growth * 100:.0f}% of that increase**" in text
-    assert f"appearing in {data_access.get_mission_mentions().iloc[0]['images']:,} image records" in text
+    missions = data_access.get_mission_mentions().set_index("mission")
+    assert f"Artemis ranks first with {missions.loc['Artemis program (incl. EM-1)', 'images']:,} image records" in text
+    assert f"2001 Mars Odyssey comes in second with {missions.loc['2001 Mars Odyssey', 'images']:,} records" in text
+    assert "two other Mars missions also make the top eight" in text
     top_three = data_access.get_center_ranking(6).head(3)["share"].sum()
     assert f"contribute about {top_three:.0f}% of our records" in text
 
@@ -600,6 +604,17 @@ def test_annual_overview_highlights_peak_year():
     colors = list(figure.data[0].marker.color)
     assert colors.count(insights.GOLD) == 1
     assert colors[list(figure.data[0].x).index(peak)] == insights.GOLD
+
+    # The timeline reaches the latest year with records up to today, and labels it.
+    latest = int(annual["year"].max())
+    assert latest == min(dt.date.today().year, scalar(
+        "SELECT MAX(EXTRACT(YEAR FROM date))::int FROM nasa_records WHERE date <= CURRENT_DATE"))
+    assert int(annual.set_index("year").loc[latest, "unique_images"]) == scalar(
+        "SELECT COUNT(*) FROM nasa_records WHERE EXTRACT(YEAR FROM date) = :year AND date <= CURRENT_DATE",
+        {"year": latest})
+    ticks = list(figure.layout.xaxis.tickvals)
+    assert ticks[-1] == latest and max(figure.data[0].x) == latest
+    assert all(b - a >= 10 for a, b in zip(ticks, ticks[1:]))
 
 
 @needs_db
