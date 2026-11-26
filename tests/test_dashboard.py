@@ -18,6 +18,7 @@ DASHBOARD_DIR = ROOT / "dashboard"
 sys.path.insert(0, str(DASHBOARD_DIR))
 load_dotenv(ROOT / ".env", override=False)
 
+import analysis_rules as rules  # noqa: E402
 import data_access  # noqa: E402
 from views import components  # noqa: E402
 
@@ -62,7 +63,7 @@ def test_unknown_sort_is_rejected():
 def test_missing_values_fall_back_gracefully():
     assert components.format_date(None) == "Date unavailable"
     assert components.format_date(dt.date(2019, 3, 5)) == "Mar 5, 2019"
-    assert "Image unavailable" in components.thumbnail_html(None, "x")
+    assert components.PREVIEW_UNAVAILABLE in components.thumbnail_html(None, "x")
     html = components.card_html("https://example.com/a.jpg", 'A <b>"quoted"</b> title', ["Credit: NASA"])
     assert "<b>" not in html and "&lt;b&gt;" in html
 
@@ -362,6 +363,110 @@ def test_insights_match_eda_definitions():
     assert completeness["completeness"].between(0, 100).all()
 
 
+@needs_db
+def test_peak_mission_union_is_deduplicated():
+    breakdown = data_access.get_peak_mission_breakdown()
+    assert breakdown["year"].tolist() == list(rules.PEAK_YEARS)
+    missions = list(rules.PEAK_MISSIONS)
+    for _, row in breakdown.iterrows():
+        # The union is at least the largest mission and at most their sum.
+        assert row[missions].max() <= row["any_mission"] <= row[missions].sum()
+        assert row["any_mission"] + row["other"] == row["total"]
+
+    # Independent check of the union with one combined regular expression.
+    combined = "|".join(f"({pattern})" for pattern in rules.PEAK_MISSIONS.values())
+    union_2014 = scalar("""
+        SELECT COUNT(*) FROM nasa_records r
+        WHERE r.center = 'KSC' AND EXTRACT(YEAR FROM r.date) = 2014
+          AND EXISTS (SELECT 1 FROM nasa_search_matches m
+                      WHERE m.source_id = r.source_id AND m.search_keyword = 'earth')
+          AND (r.title || ' ' || r.keywords::text) ~* :pattern
+    """, {"pattern": combined})
+    assert union_2014 == breakdown.set_index("year").loc[2014, "any_mission"]
+
+
+@needs_db
+def test_center_year_counts_and_ranking_reconcile():
+    centers = data_access.get_center_year_counts((2013, 2014))
+    for year in (2013, 2014):
+        assert centers[year].sum() == scalar(
+            "SELECT COUNT(*) FROM nasa_records WHERE EXTRACT(YEAR FROM date) = :year", {"year": year})
+    ranking = data_access.get_center_ranking(10)
+    assert ranking["images"].is_monotonic_decreasing
+    assert ranking.loc[0, "images"] == scalar(
+        "SELECT COUNT(*) FROM nasa_records WHERE center = :center", {"center": ranking.loc[0, "center"]})
+
+
+@needs_db
+def test_content_profile_covers_every_record_once():
+    profile = data_access.get_center_content_profile(("KSC", "JPL", "JSC"))
+    assert set(profile["content_group"]) <= set(rules.CONTENT_GROUPS)
+    for center, group in profile.groupby("center"):
+        assert group["images"].sum() == scalar(
+            "SELECT COUNT(*) FROM nasa_records WHERE center = :center", {"center": center})
+        assert abs(group["share"].sum() - 100) < 1e-6
+
+
+@needs_db
+def test_title_rules_behave_as_documented():
+    def matches(title, pattern):
+        return bool(scalar("SELECT :title ~* :pattern", {"title": title, "pattern": pattern}))
+
+    assert matches("KSC-2011-7368", rules.ID_ONLY_TITLE)
+    assert matches("iss068e054895", rules.ID_ONLY_TITLE)
+    assert not matches("Artemis II Rollout", rules.ID_ONLY_TITLE)
+    assert matches("Sentinel-6B Encapsulation", rules.OPERATIONS_TITLE)
+    assert matches("Lopez-Alegria during EVA 8", rules.OPERATIONS_TITLE)
+    assert not matches("Defrosting Dunes within Chasma Boreale", rules.OPERATIONS_TITLE)
+    assert matches("Earth Observations taken by the Expedition 38 crew", rules.EARTH_OBSERVATION_TITLE)
+    assert matches("Orion, EFT-1", rules.MISSION_ALIASES["Orion spacecraft (incl. EFT-1)"])
+    assert not matches("Orion Nebula in infrared", rules.MISSION_ALIASES["Orion spacecraft (incl. EFT-1)"])
+
+
+@needs_db
+def test_mission_mentions_count_distinct_images():
+    missions = data_access.get_mission_mentions()
+    assert missions["mission"].is_unique
+    assert missions["images"].is_monotonic_decreasing
+    assert (missions["peak_year_images"] <= missions["images"]).all()
+    juno = missions.set_index("mission").loc["Juno", "images"]
+    expected = scalar("""
+        SELECT COUNT(*) FROM nasa_records r
+        WHERE r.date <= CURRENT_DATE
+          AND (r.title || ' | ' || COALESCE((SELECT string_agg(k, ' | ')
+                                             FROM jsonb_array_elements_text(r.keywords) k), '')) ~* :p
+    """, {"p": rules.MISSION_ALIASES["Juno"]})
+    assert juno == expected
+
+
+@needs_db
+def test_credit_and_location_groups_cover_available_values():
+    formats = data_access.get_credit_formats()
+    assert formats["images"].sum() == scalar("SELECT COUNT(*) FROM nasa_records WHERE credit ~ '[^[:space:]]'")
+    groups = data_access.get_location_groups()
+    assert groups["images"].sum() == scalar("SELECT COUNT(*) FROM nasa_records WHERE location ~ '[^[:space:]]'")
+    assert set(groups["location_group"]) <= set(rules.LOCATION_GROUPS) | {rules.OTHER_LOCATION}
+    top = data_access.get_top_locations(10)
+    assert len(top) == 10 and top["images"].is_monotonic_decreasing
+
+
+@needs_db
+def test_archive_years_only_list_years_with_records():
+    years = data_access.get_archive_years()
+    assert years["year"].min() >= data_access.NASA_FIRST_YEAR
+    assert years["year"].max() <= dt.date.today().year
+    assert (years["images"] > 0).all()
+    # Combined filters: every listed year really has KSC Earth-topic records.
+    ksc_earth = data_access.get_archive_years(topics=("earth",), centers=("KSC",)).set_index("year")
+    assert ksc_earth.loc[2014, "images"] == data_access.get_peak_mission_breakdown().set_index("year").loc[2014, "total"]
+
+
+def test_year_bounds_never_pass_today():
+    today = dt.date(2026, 11, 25)
+    assert data_access.year_bounds(2014, today) == (dt.date(2014, 1, 1), dt.date(2014, 12, 31))
+    assert data_access.year_bounds(2026, today) == (dt.date(2026, 1, 1), today)
+
+
 # ---------------------------------------------------------------------------
 # App smoke tests: every page renders without exceptions
 # ---------------------------------------------------------------------------
@@ -450,17 +555,33 @@ def test_planet_gallery_page_topic_selection():
 
 
 @needs_db
-def test_insights_page_renders_four_charts():
+def test_insights_page_renders_three_insights():
     app = run_view("insights")
     assert not app.exception
-    assert len(app.get("plotly_chart")) == 4
+    headings = [block.value for block in app.subheader]
+    assert headings == ["Behind the 2014 Peak", "Beyond Planet Photos: NASA Centers & Image Content",
+                        "Missions, Sources & Locations"]
+    # Main and secondary charts for the three insights (tabs render their charts too).
+    assert len(app.get("plotly_chart")) == 9
+    text = " ".join(block.value for block in app.markdown)
+    assert text.count("Key Findings") == 3
+    assert "Interpretation & Limitation" not in text
+
+    # Key Findings are computed from the live queries.
+    breakdown = data_access.get_peak_mission_breakdown()
+    last = breakdown.iloc[-1]
+    assert f"{int(last['any_mission']):,}" in text
+    assert f"{data_access.get_mission_mentions().iloc[0]['images']:,}" in text
 
 
 @needs_db
 def test_explore_page_search_pagination_and_reset():
+    from views import explore
+
     app = run_view("explore")
     assert not app.exception
     assert any("matching images" in block.value for block in app.markdown)
+    assert any(explore.DATE_NOTE in block.value for block in app.markdown)
 
     # Next page moves forward and enables Previous.
     next_button = next(b for b in app.button if b.label == "Next →")
@@ -474,12 +595,95 @@ def test_explore_page_search_pagination_and_reset():
 
     # A search with no results shows a friendly message instead of an error.
     app.text_input(key="filter_search").set_value("zzzz-no-such-image-zzzz").run()
-    assert any("No images match" in block.value for block in app.info)
+    assert any(explore.NO_RESULTS in block.value for block in app.info)
 
-    # Reset filters restores the default results (everything dated up to today).
+    # Reset filters restores the default results: NASA's era, 1958 up to today.
     next(b for b in app.button if b.label == "Reset filters").click().run()
     assert app.text_input(key="filter_search").value == ""
-    total = data_access.get_dataset_profile()["historical_images"]
+    assert app.selectbox(key="filter_year").value == explore.ALL_YEARS
+    total = scalar("""SELECT COUNT(*) FROM nasa_records
+                      WHERE date >= DATE '1958-01-01' AND date <= CURRENT_DATE""")
+    assert any(f"{total:,} matching images" in block.value for block in app.markdown)
+
+
+@needs_db
+def test_explore_year_selector_and_combined_filters():
+    from views import explore
+
+    app = run_view("explore")
+    year_box = app.selectbox(key="filter_year")
+    years = [option for option in year_box.options if option != explore.ALL_YEARS]
+    # Only years with records, from 1958 up to the current year, newest first.
+    assert years and all(option.split(" ")[0].isdigit() for option in years)
+    numbers = [int(option.split(" ")[0]) for option in years]
+    assert numbers == sorted(numbers, reverse=True)
+    assert min(numbers) >= data_access.NASA_FIRST_YEAR
+    assert max(numbers) <= dt.date.today().year
+
+    # 2014, the archive's peak year.
+    year_box.set_value(2014).run()
+    assert not app.exception
+    expected_2014 = scalar("SELECT COUNT(*) FROM nasa_records WHERE EXTRACT(YEAR FROM date) = 2014")
+    assert any(f"{expected_2014:,} matching images** in 2014" in block.value for block in app.markdown)
+
+    # Year + center + topic together: KSC Earth-topic records in 2014.
+    app.multiselect(key="filter_centers").set_value(["KSC"]).run()
+    app.multiselect(key="filter_topics").set_value(["earth"]).run()
+    assert not app.exception
+    expected = data_access.get_peak_mission_breakdown().set_index("year").loc[2014, "total"]
+    assert any(f"{int(expected):,} matching images** in 2014" in block.value for block in app.markdown)
+
+    # Narrowing to a topic with few records keeps only that topic's years.
+    app.multiselect(key="filter_centers").set_value([]).run()
+    app.multiselect(key="filter_topics").set_value(["uranus"]).run()
+    uranus_years = data_access.get_archive_years(topics=("uranus",))["year"].tolist()
+    options = [o for o in app.selectbox(key="filter_year").options if o != explore.ALL_YEARS]
+    assert [int(o.split(" ")[0]) for o in options] == uranus_years
+    if 2014 not in uranus_years:
+        assert app.selectbox(key="filter_year").value == explore.ALL_YEARS
+
+
+@needs_db
+def test_explore_historical_archive_and_empty_ranges():
+    from views import explore
+
+    app = run_view("explore")
+    assert any(explore.HISTORICAL_NOTE in block.value for block in app.markdown)
+
+    # The pre-1958 shortcut opens a custom range that starts at the earliest stored date.
+    next(b for b in app.button if b.label == "Records before 1958").click().run()
+    assert not app.exception
+    assert app.toggle(key="filter_custom_dates").value is True
+    earliest, _, _ = data_access.get_date_bounds()
+    assert app.date_input(key="filter_dates").value == (earliest, dt.date(1957, 12, 31))
+    pre_nasa = scalar("SELECT COUNT(*) FROM nasa_records WHERE date < DATE '1958-01-01'")
+    assert any(f"{pre_nasa:,} matching images" in block.value for block in app.markdown)
+    assert sum(b.label == "View details" for b in app.button) == min(pre_nasa, data_access.PAGE_SIZE)
+    # The Year filter is disabled while a custom range is active.
+    assert app.selectbox(key="filter_year").disabled
+
+    # 1912 alone: the earliest record (a von Braun childhood photo dated with his birth date).
+    app.date_input(key="filter_dates").set_value((earliest, dt.date(1912, 12, 31))).run()
+    count_1912 = scalar("SELECT COUNT(*) FROM nasa_records WHERE EXTRACT(YEAR FROM date) = 1912")
+    noun = "image" if count_1912 == 1 else "images"
+    assert any(f"{count_1912:,} matching {noun}**" in block.value for block in app.markdown)
+
+    # A range with no records shows the friendly message and a reset button.
+    app.date_input(key="filter_dates").set_value((dt.date(1920, 1, 1), dt.date(1940, 12, 31))).run()
+    assert not app.exception
+    assert any(explore.NO_RESULTS in block.value for block in app.info)
+    next(b for b in app.button if b.label == "Reset filters" and b.key == "reset_after_empty").click().run()
+    assert app.toggle(key="filter_custom_dates").value is False
+    assert any("matching images" in block.value for block in app.markdown)
+
+    # 1958 (NASA's founding year) through the Year filter.
+    app.selectbox(key="filter_year").set_value(1958).run()
+    count_1958 = scalar("SELECT COUNT(*) FROM nasa_records WHERE EXTRACT(YEAR FROM date) = 1958")
+    assert any(f"{count_1958:,} matching images** in 1958" in block.value for block in app.markdown)
+
+    # Every stored date, including future-dated metadata.
+    next(b for b in app.button if b.label == "Every stored date").click().run()
+    total = scalar("SELECT COUNT(*) FROM nasa_records")
     assert any(f"{total:,} matching images" in block.value for block in app.markdown)
 
 

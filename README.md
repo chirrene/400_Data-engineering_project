@@ -64,6 +64,22 @@ The earlier search snapshot reported **80,811 combined results** across nine top
 
 **Interpretation note:** Keyword matches do not always indicate a planet as a scientific subject (for example, “Mars” can refer to a place and “Saturn” to a rocket). Counts from keyword searches should not be presented as unbiased measures of NASA exploration activity.
 
+## Dashboard and EDA
+
+The Streamlit dashboard (`python -m streamlit run dashboard/app.py`) reads PostgreSQL through read-only, parameterized queries in `dashboard/data_access.py`:
+
+- **Home:** archive totals and links to each page.
+- **Data Insights:** three data stories computed live from the database.
+  1. *Behind the 2014 Peak:* which centers and documented missions are reflected in the archive's busiest year.
+  2. *Beyond Planet Photos:* how KSC, JPL, and JSC records differ, based on explicit title rules.
+  3. *Missions, Sources & Locations:* the most-mentioned missions plus grouped Credit and Location metadata.
+- **Planet Gallery:** curated planet and space imagery for discovery.
+- **Archive Search:** comprehensive retrieval by text, topic, center, and year.
+  - The year list starts in 1958 (NASA's founding year) and shows only years that have matching records.
+  - The *Historical Archive* option reaches every stored date, including a small number of earlier records such as NACA-era photographs.
+
+`notebooks/eda.ipynb` contains the full analysis behind the three insights, plus supplementary data-quality checks and sources. The text rules shared by the notebook and the dashboard live in `dashboard/analysis_rules.py`. Exported charts are saved in `assets/eda/`.
+
 ## Technology stack
 
 | Area | Tools |

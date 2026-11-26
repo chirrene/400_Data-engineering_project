@@ -95,12 +95,14 @@ a[data-testid="stSidebarNavLink"][aria-current="page"] [data-testid="stIconMater
 .kpi-value {{ color: {NAVY}; font-size: 2.4rem; font-weight: 700; line-height: 1.25; }}
 .kpi-note {{ color: {MUTED}; font-size: 0.83rem; }}
 
-/* Gallery image tile. The 'Image unavailable' label shows through if the URL fails. */
+/* Gallery image tile. The 'preview unavailable' label shows through if the URL fails. */
 .thumb {{
     position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden;
     background: #E6EEF6; display: flex; align-items: center; justify-content: center;
     color: #9AAABB; font-size: 0.8rem;
 }}
+.thumb-fallback {{ padding: 0 1rem; text-align: center; line-height: 1.35; }}
+.thumb.cover .thumb-fallback {{ font-size: 0.6rem; padding: 0 0.6rem; }}
 .thumb img {{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }}
 .thumb.detail {{ aspect-ratio: auto; height: 400px; background: #0E2540; }}
 .thumb.detail img {{ object-fit: contain; }}
@@ -135,9 +137,13 @@ a[data-testid="stSidebarNavLink"][aria-current="page"] [data-testid="stIconMater
 /* Small secondary note under the Planet Gallery date controls. */
 .date-note {{ color: {MUTED}; font-size: 0.82rem; line-height: 1.5; margin-top: 0.2rem; }}
 
-/* Key-finding and limitation boxes on the Insights page. */
+/* Key Findings box and the small example cards on the Insights page. */
 [class*="st-key-finding_"] {{ background: #EEF6FC; border-left: 3px solid {ACCENT} !important; }}
-[class*="st-key-note_"] {{ background: #FBF8F2; border-left: 3px solid {GOLD} !important; }}
+[class*="st-key-finding_"] li {{ margin-bottom: 0.35rem; }}
+.insight-question {{ color: {MUTED}; font-size: 1.05rem; font-style: italic; margin: -0.3rem 0 0.8rem 0; }}
+.example-link {{ font-size: 0.82rem; }}
+.context-note {{ color: {MUTED}; font-size: 0.85rem; border-top: 1px solid #E6EEF5; padding-top: 0.6rem;
+                 margin-top: 0.4rem; }}
 
 /* Data-pipeline steps on the Home page. */
 .pipeline {{ display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; margin: 0.3rem 0 1rem 0; }}

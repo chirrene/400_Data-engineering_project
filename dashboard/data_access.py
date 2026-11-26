@@ -13,6 +13,8 @@ import streamlit as st
 from dotenv import load_dotenv
 from sqlalchemy import create_engine, text
 
+import analysis_rules as rules
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 # The dashboard, like the EDA, only covers NASA Image Library images.
@@ -212,6 +214,37 @@ def search_images(search_text="", topics=(), centers=(), start_date=None, end_da
         LIMIT :limit OFFSET :offset
     """
     return run_query(sql, params)
+
+
+# NASA began operations on October 1, 1958. The Simple Search timeline starts in
+# that year; older material stays reachable through the Historical Archive filters.
+NASA_FIRST_YEAR = 1958
+
+
+@st.cache_data(ttl=600, max_entries=200, show_spinner=False)
+def get_archive_years(search_text="", topics=(), centers=(), first_year=NASA_FIRST_YEAR):
+    """Years that actually contain matching records, newest first, with counts.
+
+    Only years from first_year up to the current year are returned, and dates
+    later than today (a known metadata error) are left out.
+    """
+    where_sql, params = build_filter_clause(search_text, topics, centers)
+    params["first_year"] = int(first_year)
+    sql = f"""
+        SELECT EXTRACT(YEAR FROM r.date)::integer AS year, COUNT(*) AS images
+        FROM nasa_records AS r
+        WHERE {where_sql}
+          AND r.date IS NOT NULL AND isfinite(r.date) AND r.date <= CURRENT_DATE
+          AND EXTRACT(YEAR FROM r.date)::integer >= :first_year
+        GROUP BY 1
+        ORDER BY year DESC
+    """
+    return run_query(sql, params)
+
+
+def year_bounds(year, today):
+    """First and last day of a year, never later than today."""
+    return dt.date(int(year), 1, 1), min(dt.date(int(year), 12, 31), today)
 
 
 # ---------------------------------------------------------------------------
@@ -447,7 +480,7 @@ def get_featured_images(limit=6):
 
 
 # ---------------------------------------------------------------------------
-# Data Insights page (same definitions as notebooks/eda.ipynb)
+# Supplementary EDA diagnostics (notebook Section 4 and the Insight 1 trend line)
 # ---------------------------------------------------------------------------
 
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -581,3 +614,317 @@ def get_metadata_completeness():
     summary["missing"] = total_images - summary["available"]
     summary["completeness"] = summary["available"] / total_images * 100 if total_images else 0.0
     return summary.sort_values("completeness", ascending=False, kind="stable").reset_index(drop=True)
+
+
+
+# ---------------------------------------------------------------------------
+# Data Insights page: three analytical stories (same SQL as notebooks/eda.ipynb)
+# ---------------------------------------------------------------------------
+
+# Title plus every keyword, so a mission named in either place is found.
+SEARCH_TEXT_SQL = """r.title || ' | ' || COALESCE(
+    (SELECT string_agg(k.value, ' | ') FROM jsonb_array_elements_text(r.keywords) AS k(value)), '')"""
+
+# Historical rows only: dates after today are a known metadata error.
+HISTORICAL_SQL = "r.date IS NOT NULL AND isfinite(r.date) AND r.date <= CURRENT_DATE"
+
+
+def _has_topic_sql(param):
+    return f"""EXISTS (SELECT 1 FROM nasa_search_matches AS m
+                     WHERE m.source_api = r.source_api AND m.source_id = r.source_id
+                       AND m.search_keyword = :{param})"""
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_center_year_counts(years=rules.PEAK_YEARS):
+    """Unique images per NASA center in each of the given years (Insight 1)."""
+    sql = f"""
+        SELECT COALESCE(NULLIF(BTRIM(r.center), ''), 'Unknown') AS center,
+               EXTRACT(YEAR FROM r.date)::integer AS year,
+               COUNT(*) AS images
+        FROM nasa_records AS r
+        WHERE {SCOPE_SQL} AND {HISTORICAL_SQL}
+          AND EXTRACT(YEAR FROM r.date)::integer = ANY(:years)
+        GROUP BY 1, 2
+    """
+    counts = run_query(sql, {"years": list(years)})
+    table = counts.pivot_table(index="center", columns="year", values="images", fill_value=0)
+    table = table.reindex(columns=list(years), fill_value=0).astype(int)
+    table["change"] = table[years[-1]] - table[years[0]]
+    return table.sort_values(years[-1], ascending=False).reset_index()
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_peak_mission_breakdown(center=rules.PEAK_CENTER, topic=rules.PEAK_TOPIC,
+                               years=rules.PEAK_YEARS):
+    """Mission mentions inside one center/topic subset, by year (Insight 1).
+
+    Each image is counted once per mission, and the 'any mission' column is a
+    deduplicated union, so an image naming two missions is never counted twice.
+    """
+    names = list(rules.PEAK_MISSIONS)
+    params = {"center": center, "topic": topic, "years": list(years)}
+    flags = []
+    for index, pattern in enumerate(rules.PEAK_MISSIONS.values()):
+        params[f"mission_{index}"] = pattern
+        flags.append(f"(text_value ~* :mission_{index}) AS mission_{index}")
+    sql = f"""
+        WITH subset AS (
+            SELECT EXTRACT(YEAR FROM r.date)::integer AS year, {SEARCH_TEXT_SQL} AS text_value
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND {HISTORICAL_SQL}
+              AND r.center = :center
+              AND EXTRACT(YEAR FROM r.date)::integer = ANY(:years)
+              AND {_has_topic_sql("topic")}
+        ), flagged AS (
+            SELECT year, {", ".join(flags)} FROM subset
+        )
+        SELECT year, COUNT(*) AS total,
+               {", ".join(f"COUNT(*) FILTER (WHERE mission_{i}) AS mission_{i}" for i in range(len(names)))},
+               COUNT(*) FILTER (WHERE {" OR ".join(f"mission_{i}" for i in range(len(names)))}) AS any_mission
+        FROM flagged
+        GROUP BY year
+        ORDER BY year
+    """
+    result = run_query(sql, params)
+    result = result.rename(columns={f"mission_{i}": name for i, name in enumerate(names)})
+    result["other"] = result["total"] - result["any_mission"]
+    result["mission_share"] = (result["any_mission"] / result["total"] * 100).where(result["total"] > 0, 0.0)
+    return result
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_peak_mission_examples(center=rules.PEAK_CENTER, topic=rules.PEAK_TOPIC,
+                              year=rules.PEAK_YEARS[-1], missions=("Orion / EFT-1", "OCO-2", "Morpheus / ALHAT")):
+    """One real archive image per mission from the peak-year subset (Insight 1)."""
+    rows = []
+    for mission in missions:
+        sql = f"""
+            SELECT r.source_id, r.title, r.date, r.image_url, r.page_url, r.credit, :mission AS mission
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND r.center = :center
+              AND EXTRACT(YEAR FROM r.date)::integer = :year
+              AND {_has_topic_sql("topic")}
+              AND r.title ~* :pattern
+              AND r.title !~ :id_only
+              AND r.image_url LIKE '%~thumb.jpg'
+            ORDER BY r.date, r.source_id
+            LIMIT 1
+        """
+        rows.append(run_query(sql, {
+            "center": center, "topic": topic, "year": int(year), "mission": mission,
+            "pattern": rules.PEAK_MISSIONS[mission], "id_only": rules.ID_ONLY_TITLE,
+        }))
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_center_ranking(limit=10):
+    """Unique images per NASA center with each center's share of the archive (Insights 2 and 3)."""
+    sql = f"""
+        SELECT COALESCE(NULLIF(BTRIM(r.center), ''), 'Unknown') AS center, COUNT(*) AS images,
+               100.0 * COUNT(*) / SUM(COUNT(*)) OVER () AS share
+        FROM nasa_records AS r
+        WHERE {SCOPE_SQL}
+        GROUP BY 1
+        ORDER BY images DESC, center
+        LIMIT :limit
+    """
+    return run_query(sql, {"limit": int(limit)})
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_center_content_profile(centers=("KSC", "JPL", "JSC")):
+    """Split each center's records into title-based content groups (Insight 2).
+
+    The groups are checked in order: ID-only title, crew Earth photography,
+    operations/people/engineering words, and everything else.
+    """
+    operations, earth, other, id_only = rules.CONTENT_GROUPS
+    sql = f"""
+        WITH labelled AS (
+            SELECT r.center,
+                   CASE WHEN r.title = r.source_id OR r.title ~ :id_only THEN :g_id_only
+                        WHEN r.title ~* :earth THEN :g_earth
+                        WHEN r.title ~* :operations THEN :g_operations
+                        ELSE :g_other END AS content_group,
+                   (r.title ~* :operations_v1) AS first_rule_match,
+                   (r.source_id LIKE 'PIA%') AS photojournal_id
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND r.center = ANY(:centers)
+        )
+        SELECT center, content_group, COUNT(*) AS images,
+               COUNT(*) FILTER (WHERE first_rule_match) AS first_rule_matches,
+               COUNT(*) FILTER (WHERE photojournal_id) AS photojournal_ids
+        FROM labelled
+        GROUP BY center, content_group
+    """
+    profile = run_query(sql, {
+        "centers": list(centers), "id_only": rules.ID_ONLY_TITLE, "earth": rules.EARTH_OBSERVATION_TITLE,
+        "operations": rules.OPERATIONS_TITLE, "operations_v1": rules.OPERATIONS_TITLE_V1,
+        "g_id_only": id_only, "g_earth": earth, "g_operations": operations, "g_other": other,
+    })
+    totals = profile.groupby("center")["images"].transform("sum")
+    profile["share"] = profile["images"] / totals * 100
+    return profile
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_content_examples():
+    """Three real records that show different kinds of archive content (Insight 2)."""
+    # (center, title pattern, preferred title words, title words that rule the record out)
+    no_match = "$^"
+    examples = {
+        "KSC · launch processing": ("KSC", rules.OPERATIONS_TITLE, r"encapsulat|fairing|rollout", no_match),
+        "JSC · crew Earth photography": ("JSC", rules.EARTH_OBSERVATION_TITLE + "|aurora|airglow",
+                                         r"aurora|airglow", no_match),
+        "JPL · Photojournal Mars image": ("JPL", r"crater|dunes|valles|chasma", r"dunes", rules.OPERATIONS_TITLE),
+    }
+    rows = []
+    for label, (center, pattern, preferred, excluded) in examples.items():
+        sql = f"""
+            SELECT r.source_id, r.title, r.date, r.image_url, r.page_url, r.credit, :label AS label
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND {HISTORICAL_SQL} AND r.center = :center
+              AND r.title ~* :pattern AND r.title ~* :preferred AND r.title !~ :id_only
+              AND r.title !~* :excluded AND r.source_id ~ :id_rule
+              AND r.image_url LIKE '%~thumb.jpg'
+            ORDER BY r.date DESC, r.source_id
+            LIMIT 1
+        """
+        rows.append(run_query(sql, {"label": label, "center": center, "pattern": pattern,
+                                    "preferred": preferred, "excluded": excluded,
+                                    "id_rule": "^PIA" if center == "JPL" else ".",
+                                    "id_only": rules.ID_ONLY_TITLE}))
+    return pd.concat(rows, ignore_index=True)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_mission_mentions():
+    """Distinct images that mention each mission or program, plus its busiest year (Insight 3)."""
+    sql = f"""
+        WITH missions AS (
+            SELECT * FROM unnest(CAST(:names AS text[]), CAST(:patterns AS text[])) AS m(mission, pattern)
+        ), docs AS (
+            SELECT EXTRACT(YEAR FROM r.date)::integer AS year, {SEARCH_TEXT_SQL} AS text_value,
+                   (r.source_id LIKE 'PIA%') AS photojournal_id
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND {HISTORICAL_SQL}
+        ), yearly AS (
+            SELECT m.mission, d.year, COUNT(*) AS images,
+                   COUNT(*) FILTER (WHERE d.photojournal_id) AS photojournal_images
+            FROM missions AS m
+            JOIN docs AS d ON d.text_value ~* m.pattern
+            GROUP BY m.mission, d.year
+        )
+        SELECT mission, SUM(images)::integer AS images,
+               (ARRAY_AGG(year ORDER BY images DESC, year))[1] AS peak_year,
+               MAX(images)::integer AS peak_year_images,
+               SUM(photojournal_images)::integer AS photojournal_images
+        FROM yearly
+        GROUP BY mission
+        ORDER BY images DESC, mission
+    """
+    return run_query(sql, {"names": list(rules.MISSION_ALIASES),
+                           "patterns": list(rules.MISSION_ALIASES.values())})
+
+
+# Credit values are normalized for counting only: brackets removed, "_" read as "/",
+# extra spaces collapsed, and the long form of NASA's name shortened.
+CREDIT_SQL = r"""REGEXP_REPLACE(REPLACE(BTRIM(BTRIM(r.credit), '()'), '_', '/'), '\s+', ' ', 'g')"""
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_credit_sources(limit=10):
+    """Most common normalized Credit values and the credit format (Insight 3)."""
+    sql = f"""
+        WITH credits AS (
+            SELECT CASE WHEN {CREDIT_SQL} ~* '^NASA( or National Aeronautics and Space Administration)?$'
+                        THEN 'NASA' ELSE {CREDIT_SQL} END AS credit
+            FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND r.credit ~ '[^[:space:]]'
+        )
+        SELECT credit, COUNT(*) AS images,
+               CASE WHEN credit = 'NASA' THEN 'NASA (no individual named)'
+                    WHEN credit ~* '^NASA ?/' THEN 'NASA / named individual'
+                    ELSE 'Other attribution' END AS credit_format
+        FROM credits
+        GROUP BY credit
+        ORDER BY images DESC, credit
+        LIMIT :limit
+    """
+    return run_query(sql, {"limit": int(limit)})
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_credit_formats():
+    """How every available Credit value is written (Insight 3)."""
+    sql = f"""
+        WITH credits AS (
+            SELECT {CREDIT_SQL} AS credit FROM nasa_records AS r
+            WHERE {SCOPE_SQL} AND r.credit ~ '[^[:space:]]'
+        )
+        SELECT CASE WHEN credit ~* '^NASA( or National Aeronautics and Space Administration)?$'
+                         THEN 'NASA (no individual named)'
+                    WHEN credit ~* '^NASA ?/' THEN 'NASA / named individual'
+                    ELSE 'Other attribution' END AS credit_format,
+               COUNT(*) AS images
+        FROM credits
+        GROUP BY 1
+        ORDER BY images DESC
+    """
+    return run_query(sql)
+
+
+def _location_case_sql(params):
+    """CASE expression that maps a Location value to one of the documented groups."""
+    branches = []
+    for index, (group, pattern) in enumerate(rules.LOCATION_GROUPS.items()):
+        params[f"loc_pattern_{index}"] = pattern
+        params[f"loc_group_{index}"] = group
+        branches.append(f"WHEN r.location ~* :loc_pattern_{index} THEN :loc_group_{index}")
+    params["loc_other"] = rules.OTHER_LOCATION
+    return "CASE " + " ".join(branches) + " ELSE :loc_other END"
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_location_groups():
+    """Records with a Location value, grouped by what the place represents (Insight 3)."""
+    params = {}
+    sql = f"""
+        SELECT {_location_case_sql(params)} AS location_group, COUNT(*) AS images
+        FROM nasa_records AS r
+        WHERE {SCOPE_SQL} AND r.location ~ '[^[:space:]]'
+        GROUP BY 1
+        ORDER BY images DESC
+    """
+    return run_query(sql, params)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_top_locations(limit=10):
+    """Most common Location values after trimming and case-folding (Insight 3)."""
+    params = {"limit": int(limit)}
+    sql = f"""
+        SELECT MIN(BTRIM(r.location)) AS location, COUNT(*) AS images,
+               MIN({_location_case_sql(params)}) AS location_group
+        FROM nasa_records AS r
+        WHERE {SCOPE_SQL} AND r.location ~ '[^[:space:]]'
+        GROUP BY LOWER(BTRIM(r.location))
+        ORDER BY images DESC, location
+        LIMIT :limit
+    """
+    return run_query(sql, params)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def get_center_annual_counts(center):
+    """Unique historical images per year for one NASA center (Insight 1 context)."""
+    sql = f"""
+        SELECT EXTRACT(YEAR FROM r.date)::integer AS year, COUNT(*) AS images
+        FROM nasa_records AS r
+        WHERE {SCOPE_SQL} AND {HISTORICAL_SQL} AND r.center = :center
+        GROUP BY 1
+        ORDER BY year
+    """
+    return run_query(sql, {"center": center})

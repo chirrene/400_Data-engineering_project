@@ -68,7 +68,7 @@ def render(gallery_page, archive_page, insights_page):
                        "Search every stored record by text, topic, NASA center, and date.",
                        "dest_archive")
     render_destination(destination_columns[2], insights_page, "Data Insights",
-                       "Four interactive charts from our exploratory data analysis.",
+                       "Three data stories: the 2014 peak, how NASA centers differ, and the most documented missions.",
                        "dest_insights")
 
     # A few highlights from the Planet Gallery.

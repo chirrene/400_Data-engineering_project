@@ -8,3 +8,5 @@ pytest
 SQLAlchemy
 psycopg2-binary
 nbformat>=5.0
+kaleido>=1.0
+nbclient
