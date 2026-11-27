@@ -48,6 +48,7 @@ def render(gallery_page, archive_page, insights_page):
         "cleaned, and validated by our data pipeline and served live from PostgreSQL.",
         image_url=hero_image,
         tag="Northwestern MLDS 400 · Data Engineering",
+        animated=True,
     )
 
     # KPI counts come straight from PostgreSQL.
@@ -68,7 +69,7 @@ def render(gallery_page, archive_page, insights_page):
                        "Search every stored record by text, topic, NASA center, and date.",
                        "dest_archive")
     render_destination(destination_columns[2], insights_page, "Data Insights",
-                       "Four interactive charts from our exploratory data analysis.",
+                       "Three findings: the 2014 peak, what NASA centers document, and the most documented missions.",
                        "dest_insights")
 
     # A few highlights from the Planet Gallery.

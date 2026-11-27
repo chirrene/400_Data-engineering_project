@@ -7,6 +7,9 @@ import streamlit as st
 
 GALLERY_COLUMNS = 4
 
+# Shown when an image URL is missing or fails to load in the browser.
+PREVIEW_UNAVAILABLE = "Image preview unavailable — view the original NASA record."
+
 
 def has_text(value):
     """True when a value is a non-blank string."""
@@ -24,14 +27,14 @@ def format_date(value):
 def thumbnail_html(image_url, title, css_class="thumb"):
     """Image tile with a text fallback that stays visible if the URL fails to load.
 
-    The image sits on top of an 'Image unavailable' label. A broken image with
+    The image sits on top of a 'preview unavailable' label. A broken image with
     an empty alt attribute renders as nothing, so the label shows through.
     The card title below the image already describes it.
     """
     if not has_text(image_url):
-        return f'<div class="{css_class}">Image unavailable</div>'
+        return f'<div class="{css_class}"><span class="thumb-fallback">{PREVIEW_UNAVAILABLE}</span></div>'
     return (
-        f'<div class="{css_class}">Image unavailable'
+        f'<div class="{css_class}"><span class="thumb-fallback">{PREVIEW_UNAVAILABLE}</span>'
         f'<img src="{escape(image_url, quote=True)}" alt="" title="{escape(title or "", quote=True)}" '
         'loading="lazy" referrerpolicy="no-referrer"></div>'
     )

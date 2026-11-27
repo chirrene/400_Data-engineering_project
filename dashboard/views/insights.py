@@ -1,307 +1,403 @@
-"""Data Insights page: the four EDA analyses as interactive Plotly charts.
+"""Data Insights page: three findings, each told with one chart and one paragraph.
 
-The SQL behind each chart matches notebooks/eda.ipynb (see data_access.py).
-Findings are computed from the live query results, not typed in by hand.
+1. The 2014 surge: a yearly overview, then Kennedy's Earth-topic records, 2013 vs. 2014.
+2. Where the records come from: the top NASA centers and what each one covers.
+3. Which missions appear most often in the records.
+
+The full analysis (method, tables, manual review, sources) lives in
+notebooks/eda.ipynb. Every number here comes from live, read-only SQL in
+data_access.py that uses the same definitions (dashboard/analysis_rules.py).
 """
 
-import pandas as pd
+import datetime as dt
+
 import plotly.graph_objects as go
 import streamlit as st
 
+import analysis_rules as rules
 import data_access
 from styles import page_header
 
-# Light "Starlight Observatory" palette, close to the EDA notebook's navy/blue (presentation only).
+# "Starlight Observatory" chart palette: navy highlight, muted blue data, gold accent.
 TEXT = "#17324D"
 MUTED = "#60758A"
+NAVY = "#17324D"
 BLUE = "#4A93C6"
-PEAK = "#17324D"
-GOLD = "#D8BA83"
+LIGHT_BLUE = "#BFD8EA"
+GOLD = "#C9A86A"
 GRID = "#E6EEF5"
-CHART_CONFIG = {"displaylogo": False, "scrollZoom": False}
+FONT = "'Source Sans Pro', 'Source Sans 3', sans-serif"
+# No Plotly toolbar: the charts should read cleanly on a projector.
+CHART_CONFIG = {"displayModeBar": False, "scrollZoom": False, "responsive": True}
+
+# Short labels keep the chart readable on small screens; hover shows the full name.
+CENTER_SHORT = {"KSC": "Kennedy (KSC)", "JPL": "JPL", "JSC": "Johnson (JSC)", "HQ": "Headquarters (HQ)",
+                "GSFC": "Goddard (GSFC)", "MSFC": "Marshall (MSFC)"}
+CENTER_NAMES = {
+    "KSC": "Kennedy Space Center",
+    "JPL": "Jet Propulsion Laboratory",
+    "JSC": "Johnson Space Center",
+    "HQ": "NASA Headquarters",
+    "GSFC": "Goddard Space Flight Center",
+    "MSFC": "Marshall Space Flight Center",
+    "MAF": "Michoud Assembly Facility",
+    "ARC": "Ames Research Center",
+}
+
+# Shorter display names for the mission chart (the alias rules stay unchanged).
+MISSION_LABELS = {
+    "Artemis program (incl. EM-1)": "Artemis",
+    "Orion spacecraft (incl. EFT-1)": "Orion spacecraft",
+    "Space Launch System (SLS)": "Space Launch System",
+    "Curiosity / Mars Science Laboratory": "Curiosity (MSL)",
+    "Perseverance / Mars 2020": "Perseverance (Mars 2020)",
+}
 
 
-def style_figure(figure, title, subtitle, height):
-    """Apply the shared title, font, and background settings."""
+# ---------------------------------------------------------------------------
+# Shared layout helpers
+# ---------------------------------------------------------------------------
+
+def base_layout(figure, height, left_margin=10):
+    """Shared fonts, spacing, and hover style. Titles live in the page, not the chart."""
     figure.update_layout(
-        title=dict(text=f"<b>{title}</b><br><sup>{subtitle}</sup>", x=0, xanchor="left",
-                   font=dict(size=18, color=TEXT)),
-        font=dict(family="'Source Sans Pro', 'Source Sans 3', sans-serif", size=13, color=MUTED),
+        font=dict(family=FONT, size=15, color=TEXT),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        height=height, showlegend=False,
-        margin=dict(l=90, r=70, t=95, b=60),
-        hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#BFD9EC", font=dict(size=13, color=TEXT)),
+        height=height, margin=dict(l=left_margin, r=20, t=20, b=40),
+        hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#BFD9EC", font=dict(size=14, color=TEXT)),
+        showlegend=False,
     )
-    figure.update_xaxes(gridcolor=GRID, zeroline=False, linecolor=GRID)
-    figure.update_yaxes(gridcolor=GRID, zeroline=False, linecolor=GRID)
+    figure.update_xaxes(gridcolor=GRID, zeroline=False, linecolor=GRID, automargin=True,
+                        tickfont=dict(size=14, color=MUTED))
+    figure.update_yaxes(gridcolor=GRID, zeroline=False, linecolor=GRID, automargin=True,
+                        tickfont=dict(size=15, color=TEXT))
     return figure
 
 
-def show_chart(figure):
-    st.plotly_chart(figure, use_container_width=True, theme=None, config=CHART_CONFIG)
+def show_chart(figure, key):
+    st.plotly_chart(figure, use_container_width=True, theme=None, config=CHART_CONFIG, key=key)
 
 
-def show_notes(section, key_finding, interpretation):
-    """Key finding and interpretation underneath each chart."""
-    finding_column, note_column = st.columns(2)
-    with finding_column.container(border=True, key=f"finding_{section}"):
-        st.markdown(f":material/lightbulb: **Key Finding**  \n{key_finding}")
-    with note_column.container(border=True, key=f"note_{section}"):
-        st.markdown(f":material/info: **Interpretation & Limitation**  \n{interpretation}")
+def step_label(text):
+    """Small label that tells the viewer what each chart in a panel shows."""
+    st.markdown(f'<div class="chart-step">{text}</div>', unsafe_allow_html=True)
 
 
-def section_title(number, title):
-    st.markdown(f'<div class="eyebrow">Insight {number}</div>', unsafe_allow_html=True)
-    st.subheader(title)
+def section_header(number, title, subtitle):
+    st.markdown(f'<div class="insight-number">Insight {number:02d}</div>', unsafe_allow_html=True)
+    st.markdown(f'<h2 class="insight-title">{title}</h2>', unsafe_allow_html=True)
+    st.markdown(f'<div class="insight-subtitle">{subtitle}</div>', unsafe_allow_html=True)
+
+
+def key_finding(section, text):
+    """The single takeaway paragraph under each chart."""
+    with st.container(border=True, key=f"finding_{section}"):
+        st.markdown(f"**Key Finding.** {text}")
+
+
+def method_note(text):
+    st.markdown(f'<div class="method-note">{text}</div>', unsafe_allow_html=True)
+
+
+def pct(part, whole):
+    return part / whole * 100 if whole else 0.0
 
 
 # ---------------------------------------------------------------------------
-# Insight 1: Topic distribution
+# Insight 1: The 2014 surge
 # ---------------------------------------------------------------------------
 
-def render_topic_distribution(topic_counts, total_relationships):
-    section_title(1, "Image Distribution by Search Topic")
-    topic_counts = topic_counts.assign(
-        label=topic_counts["topic"].str.title(),
-        share=topic_counts["topic_matches"] / total_relationships * 100,
-    )
+def overview_ticks(first_year, last_year):
+    """Decade labels plus the latest year, so the axis visibly reaches the newest data."""
+    ticks = list(range((first_year + 9) // 10 * 10, last_year + 1, 10))
+    # Drop a decade label that would crowd the latest-year label on a phone screen.
+    ticks = [year for year in ticks if last_year - year >= 10 or year == last_year]
+    return ticks if last_year in ticks else ticks + [last_year]
 
+
+def annual_overview_chart(annual, peak_year, today=None):
+    """Compact bar chart of records per year that makes the peak year obvious.
+
+    The last bar is labelled "(to date)" in the hover text when it is the
+    current, still incomplete, calendar year.
+    """
+    years = annual["year"].astype(int).tolist()
+    counts = annual["unique_images"].astype(int).tolist()
+    peak_images = counts[years.index(peak_year)]
+    today = today or dt.date.today()
+    hover_labels = [f"{year} (through {today:%b} {today.day})" if year == today.year else str(year)
+                    for year in years]
     figure = go.Figure(go.Bar(
-        x=topic_counts["topic_matches"], y=topic_counts["label"], orientation="h",
-        marker_color=BLUE, text=topic_counts["topic_matches"], texttemplate="%{x:,}",
-        textposition="outside", cliponaxis=False, customdata=topic_counts[["share"]],
-        hovertemplate="<b>%{y}</b><br>Matches: %{x:,}<br>Share of all matches: "
-                      "%{customdata[0]:.1f}%<extra></extra>",
+        x=years, y=counts, customdata=hover_labels,
+        marker_color=[GOLD if year == peak_year else LIGHT_BLUE for year in years],
+        hovertemplate="%{customdata}: %{y:,} image records<extra></extra>",
     ))
-    style_figure(figure, "Image–topic matches by search topic",
-                 "Keyword-search relationships · one image can match several topics", 480)
-    figure.update_yaxes(autorange="reversed", title="Search topic", showgrid=False)
-    figure.update_xaxes(title="Image–topic matches", tickformat=",d",
-                        range=[0, topic_counts["topic_matches"].max() * 1.18])
-    show_chart(figure)
+    figure.add_annotation(x=peak_year, y=peak_images, yshift=6, showarrow=False, yanchor="bottom",
+                          text=f"<b>{peak_year}: {peak_images:,}</b>", font=dict(size=14, color=TEXT))
+    base_layout(figure, 230)
+    figure.update_layout(bargap=0.15, margin=dict(l=10, r=20, t=30, b=30))
+    figure.update_xaxes(showgrid=False, tickmode="array", tickvals=overview_ticks(years[0], years[-1]),
+                        tickformat="d", range=[years[0] - 1, years[-1] + 1],
+                        tickangle=0,
+                        tickfont=dict(size=13, color=MUTED))
+    figure.update_yaxes(tickformat=",d", nticks=4, range=[0, peak_images * 1.18],
+                        tickfont=dict(size=13, color=MUTED))
+    return figure
 
-    first, second, last = topic_counts.iloc[0], topic_counts.iloc[1], topic_counts.iloc[-1]
-    top_two_share = first["share"] + second["share"]
-    show_notes(
-        1,
-        f"**{first['label']}** has the most topic matches (**{first['topic_matches']:,}**), followed by "
-        f"**{second['label']}** (**{second['topic_matches']:,}**). Together they account for "
-        f"**{top_two_share:.1f}%** of all {total_relationships:,} topic relationships, while "
-        f"**{last['label']}** has the fewest (**{last['topic_matches']:,}**).",
-        "The collection is heavily concentrated on two topics, so topic comparisons are uneven. "
-        "These counts reflect NASA keyword-search results, not how many photographs NASA took of each "
-        "planet, and results can include missions, launches, and spacecraft. Because images can match "
-        "several topics, the bars add up to more than the number of unique images.",
+
+def peak_chart(breakdown):
+    years = [str(int(year)) for year in breakdown["year"]]
+    figure = go.Figure()
+    figure.add_bar(
+        x=years, y=breakdown["any_mission"], name="Mission-linked records (Orion, Morpheus, OCO-2, TDRS, SMAP)",
+        marker_color=NAVY, width=0.5,
+        text=[f"<b>{count:,}</b><br>{share:.0f}%" for count, share
+              in zip(breakdown["any_mission"], breakdown["mission_share"])],
+        texttemplate="%{text}", textposition="inside", insidetextanchor="middle",
+        insidetextfont=dict(color="#FFFFFF", size=16), customdata=breakdown["mission_share"],
+        hovertemplate="%{x}: %{y:,} records linked to the five missions "
+                      "(%{customdata:.1f}% of the year)<extra></extra>",
     )
+    figure.add_bar(
+        x=years, y=breakdown["other"], name="All other records", marker_color=LIGHT_BLUE, width=0.5,
+        text=breakdown["other"], texttemplate="%{y:,}", textposition="inside", insidetextanchor="middle",
+        insidetextfont=dict(color=TEXT, size=16),
+        hovertemplate="%{x}: %{y:,} other records<extra></extra>",
+    )
+    # Total above each bar; the mission-related share sits inside the navy segment.
+    # Position labels by category index: numeric-looking strings such as "2014" would
+    # otherwise be read as x = 2014 and stretch the axis until the bars disappear.
+    for index, (total, share) in enumerate(zip(breakdown["total"], breakdown["mission_share"])):
+        figure.add_annotation(x=index, y=total, yshift=14, showarrow=False,
+                              text=f"<b>{int(total):,}</b> total", font=dict(size=15, color=TEXT))
+    base_layout(figure, 400)
+    figure.update_layout(
+        barmode="stack", showlegend=True,
+        legend=dict(orientation="h", x=0, y=-0.12, xanchor="left", yanchor="top", font=dict(size=14),
+                    traceorder="normal"),
+        margin=dict(l=10, r=20, t=30, b=80),
+    )
+    # Years are categories, never numbers, so the bars always render.
+    figure.update_xaxes(type="category", categoryorder="array", categoryarray=years, showgrid=False,
+                        range=[-0.5, len(years) - 0.5], tickfont=dict(size=17, color=TEXT))
+    figure.update_yaxes(title=dict(text="Image records", font=dict(size=14, color=MUTED)),
+                        tickformat=",d", range=[0, breakdown["total"].max() * 1.15],
+                        tickfont=dict(size=14, color=MUTED))
+    return figure
 
 
-# ---------------------------------------------------------------------------
-# Insight 2: Historical distribution
-# ---------------------------------------------------------------------------
+def go_to_archive_year(archive_page, year):
+    """Open Archive Search already filtered to one year."""
+    from views import explore
 
-def render_historical_distribution(annual_counts, profile):
-    section_title(2, "Historical Image Distribution")
-    if annual_counts.empty:
-        st.info("No dated images are available for the historical trend.")
+    explore.reset_filters()
+    st.session_state.filter_year = int(year)
+    st.switch_page(archive_page)
+
+
+def render_peak(archive_page=None):
+    breakdown = data_access.get_peak_mission_breakdown()
+    annual = data_access.get_annual_counts()
+    centers = data_access.get_center_year_counts(rules.PEAK_YEARS)
+    if breakdown.empty or len(breakdown) < 2 or annual.empty:
+        st.info("The data for this insight is not available right now.")
         return
 
-    analysis_date = pd.Timestamp(profile["analysis_date"])
-    historical_total = int(annual_counts["unique_images"].sum())
-    annual_counts = annual_counts.assign(share=annual_counts["unique_images"] / historical_total * 100)
-    first_year = int(annual_counts["year"].min())
-    last_year = int(annual_counts["year"].max())
-    peak = annual_counts.sort_values(["unique_images", "year"], ascending=[False, True]).iloc[0]
+    ranked = annual.sort_values("unique_images", ascending=False).reset_index(drop=True)
+    peak_year, peak_images = int(ranked.loc[0, "year"]), int(ranked.loc[0, "unique_images"])
+    first, last = breakdown.iloc[0], breakdown.iloc[-1]
+    subset_growth = int(last["total"] - first["total"])
+    mission_growth = int(last["any_mission"] - first["any_mission"])
+    by_center = centers.set_index("center")
+    last_year = rules.PEAK_YEARS[-1]
+    ksc_share = pct(by_center.loc["KSC", last_year],
+                    annual.loc[annual["year"] == last_year, "unique_images"].sum())
 
-    figure = go.Figure(go.Scatter(
-        x=annual_counts["year"], y=annual_counts["unique_images"], mode="lines",
-        line=dict(color=BLUE, width=2.5), fill="tozeroy", fillcolor="rgba(74,147,198,0.14)",
-        customdata=annual_counts[["share"]],
-        hovertemplate="<b>%{x}</b><br>Unique images: %{y:,}<br>Share: %{customdata[0]:.1f}%<extra></extra>",
+    overview = annual[(annual["year"] >= data_access.NASA_FIRST_YEAR) & (annual["unique_images"] > 0)]
+    before, after = int(first["year"]), int(last["year"])
+    section_header(1, f"What drove the {peak_year} surge in NASA image records?",
+                   f"{peak_year} has more image records than any other year in our dataset. "
+                   "Kennedy Space Center's mission work explains much of the jump.")
+    first_year, last_year = int(overview["year"].min()), int(overview["year"].max())
+    to_date = f", {last_year} to date" if last_year == dt.date.today().year else ""
+    step_label(f"① Image records per year ({first_year}–{last_year}{to_date}): {peak_year} is the highest")
+    show_chart(annual_overview_chart(overview, peak_year), "chart_insight_1_overview")
+    step_label(f"② Where the jump came from: Kennedy Space Center's Earth-topic records, {before} vs. {after}")
+    show_chart(peak_chart(breakdown), "chart_insight_1")
+    key_finding(1, (
+        f"**{peak_year} is the busiest year in our dataset**, with {peak_images:,} image records, and "
+        f"Kennedy Space Center contributed nearly half of them ({ksc_share:.1f}%). Kennedy's Earth-topic "
+        f"records grew {pct(subset_growth, first['total']):.0f}% from {before} to {after}, and records linked "
+        f"to five missions (Orion, OCO-2, Morpheus, TDRS, and SMAP) added {mission_growth:,} of them: "
+        f"**about {pct(mission_growth, subset_growth):.0f}% of that increase**. {after} was a busy year of "
+        "mission testing and launches, and the archive shows it."
     ))
-    figure.add_scatter(x=[peak["year"]], y=[peak["unique_images"]], mode="markers",
-                       marker=dict(color=PEAK, size=9, line=dict(color=GOLD, width=2)), hoverinfo="skip")
-    figure.add_annotation(x=peak["year"], y=peak["unique_images"],
-                          text=f"Peak {int(peak['year'])}: {int(peak['unique_images']):,} images",
-                          showarrow=True, arrowhead=0, arrowcolor=BLUE, ax=-60, ay=-30,
-                          bgcolor="#FFFFFF", bordercolor=GOLD, font=dict(color=TEXT))
-    style_figure(
-        figure, "Unique images by metadata year",
-        f"Future-dated records excluded · cutoff {analysis_date:%Y-%m-%d} · "
-        f"{last_year} is a partial year", 500,
-    )
-
-    # Fixed decade ticks plus the latest included year, so the end of the trend is explicit.
-    tick_years = [year for year in range(1920, last_year, 20) if year >= first_year and last_year - year >= 5]
-    figure.update_xaxes(title="Metadata year", tickmode="array", tickvals=tick_years + [last_year],
-                        tickformat="d", range=[first_year - 1, last_year + 1],
-                        rangeslider=dict(visible=True, thickness=0.1))
-    figure.update_yaxes(title="Unique images", tickformat=",d", rangemode="tozero")
-    show_chart(figure)
-
-    recent_share = annual_counts.loc[annual_counts["year"] >= 2000, "unique_images"].sum() / historical_total * 100
-    future_dates = int(profile["future_dates"])
-    show_notes(
-        2,
-        f"The trend covers **{historical_total:,} unique images** dated {first_year}–{last_year}. "
-        f"The largest year is **{int(peak['year'])}** with **{int(peak['unique_images']):,} images "
-        f"({peak['share']:.1f}%)**, and **{recent_share:.1f}%** of records are dated 2000 or later.",
-        f"Coverage is much stronger for recent decades. This reflects mission coverage, archiving, and "
-        f"our keyword searches, not necessarily how many photos NASA took each year. {last_year} is "
-        f"incomplete, and **{future_dates} future-dated records** are excluded from this chart but kept "
-        f"unchanged in the database.",
-    )
+    method_note("A record is mission-linked when a mission name appears in its title or keywords; each "
+                "record counts once. Yearly counts exclude missing and future dates, so the latest "
+                "year counts records up to today.")
+    if archive_page is not None:
+        if st.button(f"See all {peak_year} records in Archive Search", icon=":material/arrow_forward:",
+                     key="insight_to_archive", type="tertiary"):
+            go_to_archive_year(archive_page, peak_year)
 
 
 # ---------------------------------------------------------------------------
-# Insight 3: Topic overlap
+# Insight 2: Where the records come from
 # ---------------------------------------------------------------------------
 
-def build_overlap_matrix(topic_counts, topic_pairs):
-    """Symmetric topic-by-topic matrix: totals on the diagonal, shared images elsewhere."""
-    topic_order = topic_counts["topic"].tolist()
-    matrix = pd.DataFrame(0, index=topic_order, columns=topic_order, dtype="int64")
-    for row in topic_counts.itertuples(index=False):
-        matrix.loc[row.topic, row.topic] = int(row.topic_matches)
-    for row in topic_pairs.itertuples(index=False):
-        matrix.loc[row.topic_a, row.topic_b] = int(row.shared_images)
-        matrix.loc[row.topic_b, row.topic_a] = int(row.shared_images)
-    return matrix
-
-
-def render_topic_overlap(topic_counts, topic_pairs, topics_per_image, total_images):
-    section_title(3, "Topic Overlap")
-    matrix = build_overlap_matrix(topic_counts, topic_pairs)
-    topics = matrix.index.tolist()
-    labels = [topic.title() for topic in topics]
-
-    # Two layers: blue cells for shared images, gray diagonal for each topic's own total.
-    shared_values = [[None if a == b else int(matrix.loc[a, b]) for b in topics] for a in topics]
-    diagonal_values = [[int(matrix.loc[a, b]) if a == b else None for b in topics] for a in topics]
-    max_shared = int(topic_pairs["shared_images"].max()) if not topic_pairs.empty else 1
-
-    figure = go.Figure()
-    figure.add_trace(go.Heatmap(
-        z=shared_values, x=labels, y=labels, zmin=0, zmax=max(1, max_shared),
-        colorscale=[[0, "#F3F7FB"], [0.45, "#A9CBE3"], [1, "#4A93C6"]],
-        texttemplate="%{z:,}", textfont=dict(size=11, color=TEXT), xgap=3, ygap=3, hoverongaps=False,
-        colorbar=dict(title="Shared images", tickformat=",d", thickness=14, len=0.75),
-        hovertemplate="<b>%{y} / %{x}</b><br>Shared unique images: %{z:,}<extra></extra>",
-    ))
-    figure.add_trace(go.Heatmap(
-        z=diagonal_values, x=labels, y=labels, colorscale=[[0, "#E3E8EE"], [1, "#E3E8EE"]],
-        showscale=False, texttemplate="%{z:,}", textfont=dict(size=11, color=TEXT),
-        xgap=3, ygap=3, hoverongaps=False,
-        hovertemplate="<b>%{y}</b><br>Topic total: %{z:,}<extra></extra>",
-    ))
-    style_figure(figure, "Which search topics share images?",
-                 "Gray diagonal = topic totals · blue cells = shared unique images", 600)
-    figure.update_xaxes(title="Search topic", showgrid=False)
-    figure.update_yaxes(title="Search topic", autorange="reversed", showgrid=False)
-    figure.update_layout(margin=dict(l=100, r=110, t=95, b=70))
-    show_chart(figure)
-
-    multi_topic_images = int(topics_per_image.loc[topics_per_image["topic_count"] >= 2, "unique_images"].sum())
-    multi_topic_share = multi_topic_images / total_images * 100
-    if topic_pairs.empty:
-        pair_text = "No pair of topics shares an image."
-    else:
-        top_pair = topic_pairs.iloc[0]
-        size_a = int(matrix.loc[top_pair["topic_a"], top_pair["topic_a"]])
-        size_b = int(matrix.loc[top_pair["topic_b"], top_pair["topic_b"]])
-        shared = int(top_pair["shared_images"])
-        smaller_topic = top_pair["topic_a"] if size_a <= size_b else top_pair["topic_b"]
-        smaller_share = shared / min(size_a, size_b) * 100
-        jaccard = shared / (size_a + size_b - shared) * 100
-        pair_text = (
-            f"**{top_pair['topic_a'].title()} and {top_pair['topic_b'].title()}** share the most images "
-            f"(**{shared:,}**), but that is only **{smaller_share:.1f}%** of {smaller_topic.title()} "
-            f"records and a **{jaccard:.1f}% Jaccard** overlap."
-        )
-    show_notes(
-        3,
-        f"**{multi_topic_images:,} unique images ({multi_topic_share:.1f}%)** match two or more search "
-        f"topics, so most images belong to a single topic. {pair_text}",
-        "Overlap comes from NASA keyword search, not the visual content of the image: a shared label "
-        "does not mean a photo shows both planets. This is why Archive Search counts each NASA ID "
-        "once even when several selected topics match it.",
-    )
-
-
-# ---------------------------------------------------------------------------
-# Insight 4: Metadata completeness
-# ---------------------------------------------------------------------------
-
-def render_metadata_completeness(completeness, profile):
-    section_title(4, "Metadata Completeness")
+def center_chart(ranking):
+    labels = ranking["center"].tolist()
+    full_names = [CENTER_NAMES.get(center, center) for center in labels]
     figure = go.Figure(go.Bar(
-        x=completeness["completeness"], y=completeness["field"], orientation="h",
-        marker_color=BLUE, text=completeness["completeness"], texttemplate="%{text:.2f}%",
-        textposition="outside", cliponaxis=False,
-        customdata=completeness[["available", "missing"]],
-        hovertemplate="<b>%{y}</b><br>Available: %{customdata[0]:,}<br>Missing: %{customdata[1]:,}"
-                      "<br>Completeness: %{x:.2f}%<extra></extra>",
+        x=ranking["images"], y=[CENTER_SHORT.get(code, code) for code in labels],
+        orientation="h",
+        marker_color=[NAVY if index < 3 else LIGHT_BLUE for index in range(len(ranking))],
+        text=[f"<b>{images:,}</b>" if index < 3 else f"{images:,}"
+              for index, images in enumerate(ranking["images"])],
+        textposition="outside", cliponaxis=False, textfont=dict(size=15, color=TEXT),
+        customdata=list(zip(full_names, labels, ranking["share"])),
+        hovertemplate="<b>%{customdata[0]} (%{customdata[1]})</b><br>%{x:,} images · "
+                      "%{customdata[2]:.1f}% of the archive<extra></extra>",
     ))
-    style_figure(figure, "Stored metadata availability",
-                 "Non-missing values as a percentage of unique images", 460)
-    figure.update_xaxes(title="Completeness (% of unique images)", range=[0, 100],
-                        ticksuffix="%", dtick=20)
-    figure.update_yaxes(title="Metadata field", autorange="reversed", showgrid=False)
-    figure.update_layout(margin=dict(l=110, r=110, t=95, b=60))
-    show_chart(figure)
+    base_layout(figure, 400)
+    figure.update_yaxes(autorange="reversed", showgrid=False)
+    figure.update_xaxes(tickformat=",d", range=[0, ranking["images"].max() * 1.3],
+                        nticks=5, title=dict(text="Image records", font=dict(size=14, color=MUTED)))
+    return figure
 
-    by_field = completeness.set_index("field")
-    full_fields = completeness.loc[completeness["completeness"] >= 100, "field"].tolist()
-    lowest = completeness.iloc[-1]
-    second_lowest = completeness.iloc[-2]
-    if len(full_fields) > 1:
-        full_text = f"**{', '.join(full_fields[:-1])}, and {full_fields[-1]}** are **100% complete**. "
-    elif full_fields:
-        full_text = f"**{full_fields[0]}** is **100% complete**. "
-    else:
-        full_text = ""
-    show_notes(
-        4,
-        f"{full_text}**{lowest['field']}** is the least complete at **{lowest['completeness']:.2f}%** "
-        f"({lowest['available']:,} records), followed by {second_lowest['field']} at "
-        f"**{second_lowest['completeness']:.2f}%**. Usable keywords exist for "
-        f"**{by_field.loc['Keywords', 'completeness']:.2f}%** of images.",
-        f"Core fields are reliable, but optional details are often missing, so the gallery and search pages show "
-        f"'Not available' instead of blanks. Complete is not the same as accurate: there are "
-        f"**{int(profile['placeholder_titles'])} placeholder titles** and "
-        f"**{int(profile['future_dates'])} future-dated records**, and a stored image URL is not "
-        f"guaranteed to load.",
+
+# What each of the three largest centers mostly covers (from the EDA content profile).
+CENTER_FOCUS = {
+    "KSC": ("Kennedy (KSC)", "Launches, rockets, and spacecraft processing"),
+    "JSC": ("Johnson (JSC)", "Astronauts, crews, and Earth seen from orbit"),
+    "JPL": ("JPL", "Science releases from planetary missions"),
+}
+
+
+def center_focus_html(codes):
+    items = "".join(
+        f'<div class="center-focus"><span class="name">{CENTER_FOCUS[code][0]}</span>'
+        f'<span class="what">{CENTER_FOCUS[code][1]}</span></div>'
+        for code in codes if code in CENTER_FOCUS
+    )
+    return f'<div class="center-focus-row">{items}</div>'
+
+
+def render_centers(gallery_page=None, archive_page=None):
+    ranking = data_access.get_center_ranking(6)
+    profile = data_access.get_center_content_profile(("KSC", "JPL", "JSC"))
+    if ranking.empty or profile.empty:
+        st.info("The data for this insight is not available right now.")
+        return
+
+    top_three_share = ranking.head(3)["share"].sum()
+    jpl = profile[profile["center"] == "JPL"]
+    jpl_photojournal = pct(jpl["photojournal_ids"].sum(), jpl["images"].sum())
+
+    top_codes = ranking.head(3)["center"].tolist()
+    section_header(2, "Where do most of our NASA image records come from?",
+                   "The six NASA centers with the most image records. The three largest each cover "
+                   "a different side of NASA.")
+    show_chart(center_chart(ranking), "chart_insight_2")
+    st.markdown(center_focus_html(top_codes), unsafe_allow_html=True)
+    jpl_text = "nearly all" if jpl_photojournal >= 95 else f"{jpl_photojournal:.0f}%"
+    key_finding(2, (
+        f"**Three centers, Kennedy, JPL, and Johnson, contribute about {top_three_share:.0f}% of our "
+        "records**, but each covers a different side of NASA. Kennedy is mostly launches and spacecraft "
+        f"processing, Johnson is astronauts, crews, and Earth seen from orbit, and {jpl_text} of JPL's "
+        "records are science releases. That is why the dashboard has two views: a curated **Planet "
+        "Gallery** for clean space imagery, and **Archive Search** for everything else, including launches, "
+        "astronauts, engineering, and events."
+    ))
+    method_note("Each center's focus comes from title and ID patterns plus a hand-checked sample in the "
+                "EDA notebook.")
+    if gallery_page is not None and archive_page is not None:
+        left, right = st.columns(2)
+        left.page_link(gallery_page, label="Open Planet Gallery", icon=":material/public:")
+        right.page_link(archive_page, label="Open Archive Search", icon=":material/travel_explore:")
+
+
+# ---------------------------------------------------------------------------
+# Insight 3: Missions that appear most often
+# ---------------------------------------------------------------------------
+
+def mission_chart(missions):
+    top = missions.head(8)
+    labels = [MISSION_LABELS.get(name, name) for name in top["mission"]]
+    figure = go.Figure(go.Bar(
+        x=top["images"], y=labels, orientation="h",
+        marker_color=[NAVY if index < 2 else BLUE for index in range(len(top))],
+        text=[f"<b>{images:,}</b>" for images in top["images"]],
+        textposition="outside", cliponaxis=False, textfont=dict(size=15, color=TEXT),
+        customdata=top[["mission", "peak_year", "peak_year_images"]],
+        hovertemplate="<b>%{customdata[0]}</b><br>%{x:,} image records<br>"
+                      "Busiest year: %{customdata[1]} (%{customdata[2]:,})<extra></extra>",
+    ))
+    base_layout(figure, 430)
+    figure.update_yaxes(autorange="reversed", showgrid=False)
+    figure.update_xaxes(tickformat=",d", range=[0, top["images"].max() * 1.3],
+                        nticks=5, title=dict(text="Image records", font=dict(size=14, color=MUTED)))
+    return figure
+
+
+MOON_PROGRAM = ("Artemis program (incl. EM-1)", "Orion spacecraft (incl. EFT-1)", "Space Launch System (SLS)")
+ODYSSEY = "2001 Mars Odyssey"
+
+
+def mission_finding(missions):
+    """Key Finding for Insight 3; every count and rank comes from the live query."""
+    names = missions["mission"].tolist()
+    images = dict(zip(names, missions["images"].astype(int)))
+    artemis, orion, sls = MOON_PROGRAM
+    other_mars = [name for name in names[:8] if name != ODYSSEY
+                  and (name.startswith("Mars ") or name in ("Curiosity / Mars Science Laboratory",
+                                                             "Perseverance / Mars 2020"))]
+    story_holds = (names[:2] == [artemis, ODYSSEY] and orion in names[:5] and sls in names[:5]
+                   and len(other_mars) >= 2)
+    if not story_holds:
+        # The rankings changed after a data refresh: fall back to a plain description of the chart.
+        leader = names[0]
+        return (f"**{MISSION_LABELS.get(leader, leader)} ranks first**, appearing in "
+                f"{images[leader]:,} image records.")
+    count_word = {2: "two", 3: "three", 4: "four"}.get(len(other_mars), str(len(other_mars)))
+    return (
+        f"**Artemis ranks first with {images[artemis]:,} image records**, but what's interesting is that "
+        "two related parts of NASA's Moon program—Orion spacecraft and the Space Launch System—also rank "
+        f"in the top five. Meanwhile, **2001 Mars Odyssey comes in second with {images[ODYSSEY]:,} records**, "
+        f"and {count_word} other Mars missions also make the top eight. Together, these results show how "
+        "strongly both Moon missions and Mars exploration are represented in our image collection."
     )
 
 
-def render():
+def render_missions():
+    missions = data_access.get_mission_mentions()
+    if missions.empty:
+        st.info("The data for this insight is not available right now.")
+        return
+
+    section_header(3, "Which NASA missions appear most often in our records?",
+                   "The eight mission and program names found in the most image records")
+    show_chart(mission_chart(missions), "chart_insight_3")
+
+    key_finding(3, mission_finding(missions))
+    method_note("Counts are mission names found in record titles and keywords. Each record counts once per "
+                "mission, and known alternate names count toward the same mission; "
+                "for example, EM-1 counts toward Artemis.")
+
+
+def render(archive_page=None, gallery_page=None):
     page_header(
         "Exploratory data analysis",
         "Data Insights",
-        "Four analyses from our EDA notebook, recalculated live with read-only SQL. "
-        "Unique images (one per NASA ID) and image–topic relationships are counted separately.",
+        "Three questions about our NASA image records, each answered with one chart and one key "
+        "finding. Every number is computed live from our PostgreSQL database.",
     )
-
-    with st.spinner("Running aggregations in PostgreSQL..."):
-        profile = data_access.get_dataset_profile()
-        kpis = data_access.get_kpis()
-        topic_counts = data_access.get_topic_counts()
-        annual_counts = data_access.get_annual_counts()
-        topic_pairs = data_access.get_topic_pairs()
-        topics_per_image = data_access.get_topics_per_image()
-        completeness = data_access.get_metadata_completeness()
-
-    if topic_counts.empty:
-        st.info("No topic data is available yet.")
-        return
-
-    # Each insight sits in its own panel: chart first, then the finding and its limitation.
     sections = [
-        lambda: render_topic_distribution(topic_counts, kpis["total_relationships"]),
-        lambda: render_historical_distribution(annual_counts, profile),
-        lambda: render_topic_overlap(topic_counts, topic_pairs, topics_per_image, kpis["total_images"]),
-        lambda: render_metadata_completeness(completeness, profile),
+        lambda: render_peak(archive_page),
+        lambda: render_centers(gallery_page, archive_page),
+        render_missions,
     ]
-    for number, render_section in enumerate(sections, start=1):
+    for number, section in enumerate(sections, start=1):
         with st.container(border=True, key=f"panel_insight_{number}"):
-            render_section()
+            section()
         st.write("")
